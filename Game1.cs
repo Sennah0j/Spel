@@ -47,7 +47,7 @@ namespace Pong
 
             // TODO: Add your update logic here
 
-
+            /*
             if (myship_pos.Y == Window.ClientBounds.Height || myship_pos.Y == 0)
             {
                 if (myship_speed.Y == -2.5f)
@@ -72,9 +72,22 @@ namespace Pong
                 }
                 
             }
-            
             myship_pos = myship_pos + myship_speed;
-            
+            */
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Right))
+                myship_pos.X = myship_pos.X + myship_speed.X;
+            if (keyboardState.IsKeyDown(Keys.Left))
+                myship_pos.X = myship_pos.X - myship_speed.X;
+
+            if (keyboardState.IsKeyDown(Keys.Down))
+                myship_pos.Y = myship_pos.Y + myship_speed.Y;
+            if (keyboardState.IsKeyDown(Keys.Up))
+                myship_pos.Y = myship_pos.Y - myship_speed.Y;
+
+
+
+
             base.Update(gameTime);
         }
 
