@@ -18,6 +18,7 @@ namespace Pong
         Vector2 coin_pos;
         Vector2 tripod_pos;
         Vector2 tripod_speed;
+        Vector2 tripodTest;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         
@@ -30,7 +31,17 @@ namespace Pong
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-       
+        public void TripodAdd()
+        {
+            Random slump = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
+                tripod_pos.Y = slump.Next(0, Window.ClientBounds.Height - 400);
+
+                tripod_pos_list.Add(tripod_pos);
+            }
+        }
 
         protected override void Initialize()
         {
@@ -41,13 +52,7 @@ namespace Pong
                 coin_pos.Y = slump.Next(0, Window.ClientBounds.Height - 50);
                 coin_pos_list.Add(coin_pos);
             }
-            for (int i = 0; i < 5; i++)
-            {
-                tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
-                tripod_pos.Y = slump.Next(0, Window.ClientBounds.Height - 400);
-                
-                tripod_pos_list.Add(tripod_pos);
-            }
+            TripodAdd();
            
 
             // TODO: Add your initialization logic here
@@ -57,6 +62,8 @@ namespace Pong
             myship_speed.Y = 4f;
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
+            tripodTest.X = 0f;
+            tripodTest.Y = 0f;
             
             base.Initialize();
         }
@@ -85,11 +92,12 @@ namespace Pong
                 
                 tripod_pos_list[i] = tripod_pos_list[i] + tripod_speed;
             } 
-            for (int i = 0; i< tripod_pos_list.Count; i++)
+            for (int i = 0; i < tripod_pos_list.Count; i++)
             { 
-                if (tripod_pos_list[i]. == Window.ClientBounds.Height)
+                if (tripod_pos_list[i].Y == Window.ClientBounds.Height - tripod.Height)
                 {
-                    tripod_pos_list[i] = 0;
+                    tripod_pos_list.RemoveAt(i);
+                    TripodAdd();
                 }
             }
 
