@@ -19,6 +19,7 @@ namespace Pong
         Vector2 tripod_pos;
         Vector2 tripod_speed;
         Vector2 tripodTest;
+        Vector2 tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         
@@ -31,17 +32,7 @@ namespace Pong
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-        public void TripodAdd()
-        {
-            Random slump = new Random();
-            for (int i = 0; i < 5; i++)
-            {
-                tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
-                tripod_pos.Y = slump.Next(0, Window.ClientBounds.Height - 400);
 
-                tripod_pos_list.Add(tripod_pos);
-            }
-        }
 
         protected override void Initialize()
         {
@@ -52,8 +43,15 @@ namespace Pong
                 coin_pos.Y = slump.Next(0, Window.ClientBounds.Height - 50);
                 coin_pos_list.Add(coin_pos);
             }
-            TripodAdd();
-           
+            
+            for (int i = 0; i < 5; i++)
+            {
+                tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
+                tripod_pos.Y = slump.Next(0, Window.ClientBounds.Height - 400);
+
+                tripod_pos_list.Add(tripod_pos);
+            }
+
 
             // TODO: Add your initialization logic here
             myship_pos.X = 100;
@@ -64,8 +62,11 @@ namespace Pong
             tripod_speed.X = 0f;
             tripodTest.X = 0f;
             tripodTest.Y = 0f;
+            tripod_pos2.X = 0;
+            tripod_pos2.Y = 0;
             
             base.Initialize();
+            
         }
 
         protected override void LoadContent()
@@ -78,32 +79,55 @@ namespace Pong
             tripod = Content.Load < Texture2D>("Sprites/tripod");
         }
 
+        public void EnemySPeed()
+        {
+            for (int i = 0; i < tripod_pos_list.Count; i++)
+            {
+
+                tripod_pos_list[i] = tripod_pos_list[i] + tripod_speed;
+            }
+        }
+        public void EnemyRndLocation(int j) 
+        {
+            Random slump = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                tripod_pos2.X = slump.Next(0, Window.ClientBounds.Width - 50);
+                tripod_pos2.Y = slump.Next(0, Window.ClientBounds.Height - 400);
+
+                tripod_pos_list[j] = tripod_pos2;
+            }
+        }
+        public void BoundaryCheckEn()
+        {
+            for (int i = 0; i < tripod_pos_list.Count; i++)
+            {
+                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height - tripod.Height))
+                {
+                    EnemyRndLocation(i);
+                }
+            }
+        }
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+                EnemySPeed();
+            //BoundaryCheckEn();
 
-
-
-            for(int i = 0; i < tripod_pos_list.Count; i++)
-            {
-                
-                tripod_pos_list[i] = tripod_pos_list[i] + tripod_speed;
-            } 
             for (int i = 0; i < tripod_pos_list.Count; i++)
-            { 
-                if (tripod_pos_list[i].Y == Window.ClientBounds.Height - tripod.Height)
+            {
+                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height - tripod.Height))
                 {
                     tripod_pos_list.RemoveAt(i);
-                    TripodAdd();
                 }
             }
 
- 
-            
-            
+
+
+
 
 
             KeyboardState keyboardState = Keyboard.GetState();
