@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pong
 {
@@ -13,16 +14,15 @@ namespace Pong
         Texture2D myship;
         Texture2D coin;
         Texture2D tripod;
-        Vector2 myship_pos;
-        Vector2 myship_speed;
+        Vector2 myship_pos, myship_speed;
         Vector2 coin_pos;
-        Vector2 tripod_pos;
-        Vector2 tripod_speed;
-        Vector2 tripodTest;
-        Vector2 tripod_pos2;
+        Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
-        
+        Rectangle rec_myship;
+        Rectangle rec_coin; 
+        SpriteFont gameFont;
+
 
 
 
@@ -74,8 +74,8 @@ namespace Pong
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            myship = Content.Load<Texture2D>("Sprites/ship");
             coin = Content.Load<Texture2D>("Sprites/coin");
+            myship = Content.Load<Texture2D>("Sprites/ship");
             tripod = Content.Load < Texture2D>("Sprites/tripod");
         }
 
@@ -102,7 +102,7 @@ namespace Pong
         {
             for (int i = 0; i < tripod_pos_list.Count; i++)
             {
-                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height - tripod.Height))
+                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
                 {
                     EnemyRndLocation(i);
                 }
@@ -119,13 +119,13 @@ namespace Pong
 
             for (int i = 0; i < tripod_pos_list.Count; i++)
             {
-                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height - tripod.Height))
+                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
                 {
                     tripod_pos_list.RemoveAt(i);
                 }
             }
 
-
+            CheckCollision();
 
 
 
@@ -161,18 +161,28 @@ namespace Pong
             }
 
 
-
-
-
-
             base.Update(gameTime);
         }
+        
+        public void CheckCollision()
+        {
+            foreach (Vector2 cn in coin_pos_list.ToList())
+            {
+                rec_myship = new Rectangle(Convert.ToInt32(myship_pos.X), Convert.ToInt32(myship_pos.Y), myship.Width, myship.Height);
+                rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
 
+                if (rec_myship.Intersects(rec_coin))
+                {
+                    coin_pos_list.Remove(cn);
+
+                }
+            }
+            
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.BurlyWood);
             
-
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             
@@ -187,6 +197,7 @@ namespace Pong
             
 
             _spriteBatch.Draw(myship, myship_pos, Color.White);
+
             _spriteBatch.End();
             
 
