@@ -49,10 +49,10 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/tripod.png
 
-#begin Utskrift/GameFont.spritefont
+#begin Utskrift/GameFont2.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Utskrift/GameFont.spritefont
+/build:Utskrift/GameFont2.spritefont
 
