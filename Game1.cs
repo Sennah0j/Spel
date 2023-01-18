@@ -189,6 +189,7 @@ namespace Pong
                 }
             }
 
+
         }
 
         public Rectangle recta()
@@ -204,7 +205,6 @@ namespace Pong
             _spriteBatch.Begin();
 
             
-
             _spriteBatch.Draw(platform, recta() , Color.Black);
 
             foreach (Vector2 cn in coin_pos_list)
