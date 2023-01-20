@@ -9,6 +9,8 @@ namespace Pong
 {
     public class Game1 : Game
     {
+        int points = 0, countNum = 0;
+        bool touch = false;
 
         Classes Class = new Classes();
         private GraphicsDeviceManager _graphics;
@@ -17,7 +19,7 @@ namespace Pong
         Texture2D myship;
         Texture2D coin;
         Texture2D tripod;
-        Vector2 myship_pos, myship_speed;
+        Vector2 myshipPos, myship_speed, myshipSpeedDown;
         Vector2 coin_pos;
         Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
@@ -58,10 +60,11 @@ namespace Pong
             }
 
             // TODO: Add your initialization logic here
-            myship_pos.X = 100;
-            myship_pos.Y = 100;
+            myshipPos.X = 100;
+            myshipPos.Y = 100;
             myship_speed.X = 4f;
             myship_speed.Y = 4f;
+            myshipSpeedDown.Y = 4f;
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
             tripodTest.X = 0f;
@@ -72,7 +75,7 @@ namespace Pong
             base.Initialize();
             
         }
-
+        
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -88,34 +91,61 @@ namespace Pong
 
         }
 
+        public void jump(int sec)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+            if ((keyboardState.IsKeyDown(Keys.W) && countNum <= sec) && (touch = true))
+            {
+                myshipSpeedDown.Y = -4f;
+                countNum++;
+                if (countNum == (sec))
+                {
+                    touch = false;
+                }
+            }
+        }
         public void KeyInput()
         {
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.D))
-                myship_pos.X = myship_pos.X + myship_speed.X;
+                myshipPos.X = myshipPos.X + myship_speed.X;
             if (keyboardState.IsKeyDown(Keys.A))
-                myship_pos.X = myship_pos.X - myship_speed.X;
+                myshipPos.X = myshipPos.X - myship_speed.X;
 
-            if (keyboardState.IsKeyDown(Keys.S))
-                myship_pos.Y = myship_pos.Y + myship_speed.Y;
-            if (keyboardState.IsKeyDown(Keys.W))
-                myship_pos.Y = myship_pos.Y - myship_speed.Y;
+            //if (keyboardState.IsKeyDown(Keys.S))
+            //myship_pos.Y = myship_pos.Y + myship_speed.Y;
+            Keyboard.GetState();
 
 
-            if (((myship_pos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.S) == true) || (myship_pos.Y == 0 && keyboardState.IsKeyDown(Keys.W)))
+            jump(30);
+            
+            
+
+            
+            myshipPos.Y = myshipPos.Y + myshipSpeedDown.Y;
+
+            if (myshipPos.Y == Window.ClientBounds.Height - myship.Height)
             {
+                countNum = 0;
                 myship_speed.Y = 0f;
+                myshipSpeedDown.Y = 0f;
+                touch = true;
             }
-            else if (((myship_pos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (myship_pos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+            
+            else if (((myshipPos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (myshipPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
             {
                 myship_speed.Y = 4f;
             }
+            else
+            {
+                myshipSpeedDown.Y = 4f;
+            }
 
-            if (((myship_pos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (myship_pos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+            if (((myshipPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (myshipPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
             {
                 myship_speed.X = 0f;
             }
-            else if (((myship_pos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (myship_pos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+            else if (((myshipPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (myshipPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
             {
                 myship_speed.X = 4f;
             }
@@ -172,11 +202,12 @@ namespace Pong
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
             {
-                rec_myship = new Rectangle(Convert.ToInt32(myship_pos.X), Convert.ToInt32(myship_pos.Y), myship.Width, myship.Height);
+                rec_myship = new Rectangle(Convert.ToInt32(myshipPos.X), Convert.ToInt32(myshipPos.Y), myship.Width, myship.Height);
                 rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
 
                 if (rec_myship.Intersects(rec_coin))
                 {
+                    points += 10;
                     coin_pos_list.Remove(cn);
 
                 }
@@ -185,6 +216,7 @@ namespace Pong
             {
                 if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
                 {
+                    points += 10;
                     tripod_pos_list.RemoveAt(i);
                 }
             }
@@ -217,8 +249,8 @@ namespace Pong
             }
 
             
-            _spriteBatch.DrawString(gameFont, "Poäng:", new Vector2(10, 10), Color.White);
-            _spriteBatch.Draw(myship, myship_pos, Color.White);
+            _spriteBatch.DrawString(gameFont, "Poäng:" + points, new Vector2(10, 10), Color.White);
+            _spriteBatch.Draw(myship, myshipPos, Color.White);
 
             _spriteBatch.End();
             
@@ -226,4 +258,33 @@ namespace Pong
             base.Draw(gameTime);
         }
     }
+
+
+
+
+    public class Keyboard
+    {
+        static KeyboardState currentKeyState;
+        static KeyboardState previousKeyState;
+
+        public static KeyboardState GetState()
+        {
+            currentKeyState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
+            previousKeyState = currentKeyState;
+            
+            return currentKeyState;
+        }
+
+        public static bool IsPressed(Keys key)
+        {
+            return currentKeyState.IsKeyDown(key);
+        }
+
+        public static bool HasBeenPressed(Keys key)
+        {
+            return currentKeyState.IsKeyDown(key) && !previousKeyState.IsKeyDown(key);
+        }
+    }
 }
+
+
