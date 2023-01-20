@@ -9,6 +9,7 @@ namespace Pong
 {
     public class Game1 : Game
     {
+        TimeSpan currentTime = DateTime.Now.TimeOfDay;
         int points = 0, countNum = 0;
         bool touch = false;
 
@@ -91,17 +92,24 @@ namespace Pong
 
         }
 
-        public void jump(int sec)
+        
+        public void Jump(int sec)
         {
             KeyboardState keyboardState = Keyboard.GetState();
+
             if ((keyboardState.IsKeyDown(Keys.W) && countNum <= sec) && (touch = true))
             {
-                myshipSpeedDown.Y = -4f;
-                countNum++;
+                
                 if (countNum == (sec))
                 {
                     touch = false;
                 }
+                else
+                {
+                    myshipSpeedDown.Y = -4;
+                    countNum++;
+                }
+
             }
         }
         public void KeyInput()
@@ -114,10 +122,10 @@ namespace Pong
 
             //if (keyboardState.IsKeyDown(Keys.S))
             //myship_pos.Y = myship_pos.Y + myship_speed.Y;
-            Keyboard.GetState();
+            
 
 
-            jump(30);
+            Jump(30);
             
             
 
