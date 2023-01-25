@@ -12,7 +12,7 @@ namespace Pong
         TimeSpan currentTime = DateTime.Now.TimeOfDay;
         int points = 0, countNum = 0;
         bool touch = false;
-
+        float timeSinceLastShot = 0f;
         Classes Class = new Classes();
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -22,7 +22,7 @@ namespace Pong
         Texture2D tripod;
         Vector2 myshipPos, myship_speed, myshipSpeedDown;
         Vector2 coin_pos;
-        Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
+        Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2, gravity;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         Rectangle rec_myship;
@@ -40,7 +40,7 @@ namespace Pong
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        public TimeSpan ElapsedGameTime { get; set; }
 
         protected override void Initialize()
         {
@@ -72,7 +72,9 @@ namespace Pong
             tripodTest.Y = 0f;
             tripod_pos2.X = 0;
             tripod_pos2.Y = 0;
-            
+            gravity.Y = -1;
+            gravity.X = 1;
+
             base.Initialize();
             
         }
@@ -92,26 +94,30 @@ namespace Pong
 
         }
 
-        
+
         public void Jump(int sec)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
+            GameTime gameTime = new GameTime();
+            
+            timeSinceLastShot += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            KeyboardState keyboardState = Keyboard.GetState();
             if ((keyboardState.IsKeyDown(Keys.W) && countNum <= sec) && (touch = true))
             {
                 
-                if (countNum == (sec))
+                if (countNum == sec)
                 {
                     touch = false;
                 }
                 else
                 {
-                    myshipSpeedDown.Y = -4;
+                    myshipSpeedDown.Y = -1 * timeSinceLastShot * -0.5f;
                     countNum++;
                 }
 
             }
         }
+        
         public void KeyInput()
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -144,6 +150,7 @@ namespace Pong
             {
                 myship_speed.Y = 4f;
             }
+
             else
             {
                 myshipSpeedDown.Y = 4f;
@@ -191,9 +198,9 @@ namespace Pong
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-           
 
+
+            
             // TODO: Add your update logic here
                 
             //BoundaryCheckEn();
@@ -256,7 +263,7 @@ namespace Pong
                 _spriteBatch.Draw(tripod, cn, Color.White);
             }
 
-            
+            string text = timeSinceLastShot.ToString();
             _spriteBatch.DrawString(gameFont, "Poäng:" + points, new Vector2(10, 10), Color.White);
             _spriteBatch.Draw(myship, myshipPos, Color.White);
 
