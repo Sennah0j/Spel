@@ -3,12 +3,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Pong
 {
+    
     public class Game1 : Game
     {
+        string blockFile = "File",blockRead;
+        bool place;
+
+
         TimeSpan currentTime = DateTime.Now.TimeOfDay;
         double mathPow;
         int points = 0, countNum = 0;
@@ -30,7 +36,8 @@ namespace Pong
         Rectangle rec_myship;
         Rectangle rec_coin;
         Rectangle platformVis;
-        
+        MouseState mouse;
+
         SpriteFont gameFont;
 
 
@@ -219,7 +226,7 @@ namespace Pong
 
             EnemySPeed();
             CheckCollision();
-            
+            Cursor();
 
 
             base.Update(gameTime);
@@ -251,9 +258,35 @@ namespace Pong
 
         }
 
+        public void Cursor()
+        {
+            mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed)
+            {
+                
+                if(place == false)
+                {
+                    
+                    using (StreamWriter writefile = new StreamWriter(blockFile))
+                    {
+                        writefile.Write(mouse.Position.X +"," + mouse.Position.Y);
+                        writefile.Close();
+                    }
+                        
+                        
+                }
+
+            }
+            
+        }
+
         public Rectangle recta()
         {
-            return new Rectangle(50, 50, 200, 50);
+            using (StreamWriter writefile = new StreamWriter(blockFile)) ;
+                 blockRead = File.ReadAllText(blockFile);
+            blockRead.Split(",");
+            //                   X   Y   Xlång   Ytjock
+            return new Rectangle(mouse.Position.X, mouse.Position.Y, 400, 50);
         }
         protected override void Draw(GameTime gameTime)
         {
@@ -276,7 +309,7 @@ namespace Pong
             }
 
             
-            _spriteBatch.DrawString(gameFont, "Poäng:" + points, new Vector2(10, 10), Color.White);
+            _spriteBatch.DrawString(gameFont, "Poäng:" + mouse.Position.ToString(), new Vector2(10, 10), Color.White);
             _spriteBatch.Draw(myship, myshipPos, Color.White);
 
             _spriteBatch.End();
