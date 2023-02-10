@@ -11,9 +11,9 @@ namespace Pong
     
     public class Game1 : Game
     {
-        string blockFile = "File",blockRead;
-        bool place;
-
+        string blockFile = "File",blockRead, place;
+        string[] splitBlockStr;
+        KeyboardState keyboardState = Keyboard.GetState();
 
         TimeSpan currentTime = DateTime.Now.TimeOfDay;
         double mathPow;
@@ -126,6 +126,28 @@ namespace Pong
             //if (keyboardState.IsKeyDown(Keys.S))
             //myship_pos.Y = myship_pos.Y + myship_speed.Y;
 
+            blockRead = File.ReadAllText(blockFile);
+            splitBlockStr = blockRead.Split(',');
+            if (myshipPos.Y == float.Parse(splitBlockStr[2]))
+            {
+                countNum = 0;
+                myship_speed.Y = 0f;
+                myshipSpeedDown.Y = 0f;
+                gravitySpeed = 0f;
+                gravity = 0f;
+                timeJump = 0f;
+                points = 69;
+
+                touch = true;
+            }
+            else
+            {
+                points = 420;
+                myshipSpeedDown.Y = 4f;
+                gravitySpeed = 7f;
+                gravity = 0.89f;
+            }
+
 
             if (myshipPos.Y >= Window.ClientBounds.Height - myship.Height)
             {
@@ -139,12 +161,10 @@ namespace Pong
 
                 touch = true;
             }
-            
             else if (((myshipPos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (myshipPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
             {
                 myship_speed.Y = 4f;
             }
-
             else
             {
                 points = 420;
@@ -160,6 +180,16 @@ namespace Pong
             else if (((myshipPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (myshipPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
             {
                 myship_speed.X = 4f;
+            }
+            
+            if (keyboardState.IsKeyDown(Keys.E) == true)
+            {
+                using (StreamWriter writefile = new StreamWriter(blockFile))
+                {
+
+                    writefile.Write("false" + "," + splitBlockStr[1] + "," + splitBlockStr[2]);
+                    writefile.Close();
+                }
             }
 
         }
@@ -225,14 +255,14 @@ namespace Pong
             //BoundaryCheckEn();
 
             EnemySPeed();
-            CheckCollision();
+            CheckCollisionEn();
             Cursor();
 
 
             base.Update(gameTime);
         }
         
-        public void CheckCollision()
+        public void CheckCollisionEn()
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
             {
@@ -260,21 +290,31 @@ namespace Pong
 
         public void Cursor()
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             mouse = Mouse.GetState();
             if (mouse.LeftButton == ButtonState.Pressed)
             {
-                
-                if(place == false)
+
+                blockRead = File.ReadAllText(blockFile);
+                splitBlockStr = blockRead.Split(',');
+                if (splitBlockStr[0] == "true") 
                 {
                     
+                }
+                else
+                {
                     using (StreamWriter writefile = new StreamWriter(blockFile))
                     {
-                        writefile.Write(mouse.Position.X +"," + mouse.Position.Y);
+                        place = "true";
+                        writefile.Write(place + "," + mouse.Position.X + "," + mouse.Position.Y);
                         writefile.Close();
                     }
-                        
-                        
                 }
+
+                
+                        
+                        
+                
 
             }
             
@@ -282,11 +322,11 @@ namespace Pong
 
         public Rectangle recta()
         {
-            using (StreamWriter writefile = new StreamWriter(blockFile)) ;
-                 blockRead = File.ReadAllText(blockFile);
-            blockRead.Split(",");
+            
+            blockRead = File.ReadAllText(blockFile);
+            splitBlockStr = blockRead.Split(",");
             //                   X   Y   Xlång   Ytjock
-            return new Rectangle(mouse.Position.X, mouse.Position.Y, 400, 50);
+            return new Rectangle(int.Parse(splitBlockStr[1]), int.Parse(splitBlockStr[2]), 400, 50);
         }
         protected override void Draw(GameTime gameTime)
         {
