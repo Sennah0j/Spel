@@ -28,7 +28,7 @@ namespace Pong
         Texture2D myship;
         Texture2D coin;
         Texture2D tripod;
-        Vector2 myshipPos, myship_speed, myshipSpeedDown;
+        Vector2 playerPos, playerSpeed, myshipSpeedDown;
         Vector2 coin_pos;
         Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
@@ -70,10 +70,10 @@ namespace Pong
             }
 
             // TODO: Add your initialization logic here
-            myshipPos.X = 100;
-            myshipPos.Y = 100;
-            myship_speed.X = 4f;
-            myship_speed.Y = 4f;
+            playerPos.X = 100;
+            playerPos.Y = 100;
+            playerSpeed.X = 4f;
+            playerSpeed.Y = 4f;
             myshipSpeedDown.Y = 4f;
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
@@ -95,7 +95,7 @@ namespace Pong
 
             // TODO: use this.Content to load your game content here
             coin = Content.Load<Texture2D>("Sprites/coin");
-            myship = Content.Load<Texture2D>("Sprites/ship");
+            myship = Content.Load<Texture2D>("Sprites/slime");
             tripod = Content.Load < Texture2D>("Sprites/tripod");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
@@ -119,19 +119,19 @@ namespace Pong
         {
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.D))
-                myshipPos.X = myshipPos.X + myship_speed.X;
+                playerPos.X = playerPos.X + playerSpeed.X;
             if (keyboardState.IsKeyDown(Keys.A))
-                myshipPos.X = myshipPos.X - myship_speed.X;
+                playerPos.X = playerPos.X - playerSpeed.X;
 
             //if (keyboardState.IsKeyDown(Keys.S))
             //myship_pos.Y = myship_pos.Y + myship_speed.Y;
 
             blockRead = File.ReadAllText(blockFile);
             splitBlockStr = blockRead.Split(',');
-            if (myshipPos.Y == float.Parse(splitBlockStr[2]))
+            if (playerPos.Y == float.Parse(splitBlockStr[2]))
             {
                 countNum = 0;
-                myship_speed.Y = 0f;
+                playerSpeed.Y = 0f;
                 myshipSpeedDown.Y = 0f;
                 gravitySpeed = 0f;
                 gravity = 0f;
@@ -149,10 +149,10 @@ namespace Pong
             }
 
 
-            if (myshipPos.Y >= Window.ClientBounds.Height - myship.Height)
+            if (playerPos.Y >= Window.ClientBounds.Height - myship.Height)
             {
                 countNum = 0;
-                myship_speed.Y = 0f;
+                playerSpeed.Y = 0f;
                 myshipSpeedDown.Y = 0f;
                 gravitySpeed = 0f;
                 gravity = 0f;
@@ -161,9 +161,9 @@ namespace Pong
 
                 touch = true;
             }
-            else if (((myshipPos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (myshipPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+            else if (((playerPos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
             {
-                myship_speed.Y = 4f;
+                playerSpeed.Y = 4f;
             }
             else
             {
@@ -173,13 +173,13 @@ namespace Pong
                 gravity= 0.89f;
             }
 
-            if (((myshipPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (myshipPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+            if (((playerPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
             {
-                myship_speed.X = 0f;
+                playerSpeed.X = 0f;
             }
-            else if (((myshipPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (myshipPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+            else if (((playerPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
             {
-                myship_speed.X = 4f;
+                playerSpeed.X = 4f;
             }
             
             if (keyboardState.IsKeyDown(Keys.E) == true)
@@ -232,7 +232,7 @@ namespace Pong
             if (keyboardState.IsKeyDown(Keys.W) && (touch == true))
             {
                 
-                myshipPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.99));
+                playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.99));
                 mathPow = Math.Pow(mathPow, 0.99);
             }
 
@@ -247,14 +247,14 @@ namespace Pong
                 
                 touch = false;
             }
-            myshipPos.Y += (gravity * timeJump * gravitySpeed);
+            playerPos.Y += (gravity * timeJump * gravitySpeed);
 
 
 
 
             //BoundaryCheckEn();
 
-            EnemySPeed();
+            //EnemySPeed();
             CheckCollisionEn();
             Cursor();
 
@@ -266,7 +266,7 @@ namespace Pong
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
             {
-                rec_myship = new Rectangle(Convert.ToInt32(myshipPos.X), Convert.ToInt32(myshipPos.Y), myship.Width, myship.Height);
+                rec_myship = new Rectangle(Convert.ToInt32(playerPos.X), Convert.ToInt32(playerPos.Y), myship.Width, myship.Height);
                 rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
 
                 if (rec_myship.Intersects(rec_coin))
@@ -310,12 +310,6 @@ namespace Pong
                         writefile.Close();
                     }
                 }
-
-                
-                        
-                        
-                
-
             }
             
         }
@@ -350,7 +344,7 @@ namespace Pong
 
             
             _spriteBatch.DrawString(gameFont, "Poäng:" + mouse.Position.ToString(), new Vector2(10, 10), Color.White);
-            _spriteBatch.Draw(myship, myshipPos, Color.White);
+            _spriteBatch.Draw(myship, playerPos, Color.White);
 
             _spriteBatch.End();
             
