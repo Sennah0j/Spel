@@ -13,15 +13,13 @@ namespace Pong
     {
         string blockFile = "File",blockRead, place;
         string[] splitBlockStr;
-        KeyboardState keyboardState = Keyboard.GetState();
 
-        TimeSpan currentTime = DateTime.Now.TimeOfDay;
         double mathPow;
         int points = 0, countNum = 0;
         bool touch = false, wPress = false;
         float gravity, gravitySpeed;
         float timeJump = 0f;
-        Classes Class = new Classes();
+        player Class = new player();
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D platform;
@@ -130,21 +128,16 @@ namespace Pong
             splitBlockStr = blockRead.Split(',');
             if (playerPos.Y == float.Parse(splitBlockStr[2]))
             {
-                countNum = 0;
-                playerSpeed.Y = 0f;
-                myshipSpeedDown.Y = 0f;
-                gravitySpeed = 0f;
+                
                 gravity = 0f;
-                timeJump = 0f;
                 points = 69;
-
                 touch = true;
             }
             else
             {
                 points = 420;
-                myshipSpeedDown.Y = 4f;
-                gravitySpeed = 7f;
+                
+                
                 gravity = 0.89f;
             }
 
@@ -168,7 +161,6 @@ namespace Pong
             else
             {
                 points = 420;
-                myshipSpeedDown.Y = 4f;
                 gravitySpeed = 7f;
                 gravity= 0.89f;
             }
