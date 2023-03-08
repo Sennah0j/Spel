@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Pong
 {
+    
     internal class player
     {
+        Vector2 playerPos, playerSpeed, myshipSpeedDown;
         float gravity, gravitySpeed;
         int points;
         gravity = 0.2f;

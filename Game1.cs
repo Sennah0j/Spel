@@ -38,7 +38,12 @@ namespace Pong
 
         SpriteFont gameFont;
 
-
+        public void Varibles()
+        {
+            
+        }
+        
+        
 
         
         public Game1()
@@ -46,6 +51,7 @@ namespace Pong
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            
         }
         public TimeSpan ElapsedGameTime { get; set; }
 
@@ -67,6 +73,8 @@ namespace Pong
                 tripod_pos_list.Add(tripod_pos);
             }
 
+            Global.PlayerPos;
+            
             // TODO: Add your initialization logic here
             playerPos.X = 100;
             playerPos.Y = 100;
