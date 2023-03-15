@@ -5,17 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Pong
 {
     
     public class Game1 : Game
     {
+
+        
         string blockFile = "File",blockRead, place;
         string[] splitBlockStr;
 
         double mathPow;
-        int points = 0, countNum = 0;
+        static int points = 0, countNum = 0;
         bool touch = false, wPress = false;
         float gravity, gravitySpeed;
         float timeJump = 0f;
@@ -26,7 +29,7 @@ namespace Pong
         Texture2D myship;
         Texture2D coin;
         Texture2D tripod;
-        Vector2 playerPos, playerSpeed, myshipSpeedDown;
+        static Vector2 playerPos, playerSpeed, myshipSpeedDown;
         Vector2 coin_pos;
         Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
@@ -40,7 +43,7 @@ namespace Pong
 
         public void Varibles()
         {
-            
+            Global.Split = splitBlockStr;   
         }
         
         
@@ -48,6 +51,7 @@ namespace Pong
         
         public Game1()
         {
+
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -64,7 +68,9 @@ namespace Pong
                 coin_pos.Y = slump.Next(0, Window.ClientBounds.Height - 50);
                 coin_pos_list.Add(coin_pos);
             }
+
             
+
             for (int i = 0; i < 5; i++)
             {
                 tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
@@ -72,8 +78,8 @@ namespace Pong
 
                 tripod_pos_list.Add(tripod_pos);
             }
-
-            Global.PlayerPos;
+            
+            
             
             // TODO: Add your initialization logic here
             playerPos.X = 100;
@@ -89,11 +95,19 @@ namespace Pong
             tripod_pos2.Y = 0;
             gravity = 0.2f;
             gravitySpeed = 0f;
+            playerPos.X = 10;
+
+
+            
 
             base.Initialize();
             
         }
         
+        
+
+
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);

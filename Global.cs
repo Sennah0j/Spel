@@ -1,15 +1,20 @@
 ﻿using Pong;
 using System;
-using System.Numerics;
-
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
 public class Global
 {
-    
-    static Vector2 playerPos;
-    playerPos.X = 10;
-    public static Vector2 PlayerPos
+    static string[] splitBlockStr;
+    public static string[] Split
     {
-        get { return playerPos; }
-        set { playerPos = value; }
+        get { return splitBlockStr; }
+        set { splitBlockStr = value; }
     }
+   
 }
