@@ -12,7 +12,7 @@ namespace Pong
     
     public class Game1 : Game 
     {
-        
+        player Player = new player();
 
         string blockFile = "File",blockRead, place;
         
@@ -57,8 +57,7 @@ namespace Pong
         public TimeSpan ElapsedGameTime { get; set; }
 
         protected override void Initialize()
-        {
-            
+        {   
             Random slump = new Random();
             for (int i = 0; i < 5; i++)
             {
@@ -119,6 +118,8 @@ namespace Pong
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
 
+            
+
         }
 
 
@@ -133,7 +134,7 @@ namespace Pong
             }
         }
         
-        /*public void KeyInput()
+        public void KeyInput()
         {
             KeyboardState keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.D))
@@ -205,7 +206,7 @@ namespace Pong
             }
 
         }
-        */
+        
         public void EnemySPeed()
         {
             for (int i = 0; i < tripod_pos_list.Count; i++)
@@ -241,11 +242,11 @@ namespace Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //KeyInput();
-            player.KeyMovements;
+            KeyInput();
+            //Player.KeyMovements();
 
             
-
+            
             Global.TimeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (keyboardState.IsKeyDown(Keys.W) && (Global.Touch == true))
             {
