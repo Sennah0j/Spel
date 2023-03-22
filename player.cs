@@ -1,38 +1,51 @@
-﻿using Microsoft.Xna.Framework.Input;
-using Pong;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
 
 
 
-public class player : Game
+public class Player
 {
+    KeyboardState keyboardState = Keyboard.GetState();
 
-     
-   Vector2 playerPos, playerSpeed, myshipSpeedDown;
-    
-   string blockRead, place;
-   int points, countNum;
-        
-    
-    
+    Vector2 playerSpeed, myshipSpeedDown;
+    public Vector2 playerPos;
+    double mathPow;
+    string blockRead, place;
+    int points, countNum;
+    float timeJump, gravity, gravitySpeed;
+    public TimeSpan ElapsedGameTime { get; set; }
+
+    public void Gravity(GameTime gameTime)
+    {
+        Global.PlayerPos = playerPos;
+
+        timeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (keyboardState.IsKeyDown(Keys.W) && (Global.Touch == true))
+        {
+
+            playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.99));
+            mathPow = Math.Pow(mathPow, 0.99);
+        }
+
+        if (keyboardState.IsKeyUp(Keys.W))
+        {
+
+            mathPow = 10;
+            Global.Touch = false;
+        }
+        else if (timeJump >= 2)
+        {
+
+            Global.Touch = false;
+        }
+        playerPos.Y += (gravity * timeJump * gravitySpeed);
+    }
+
     public void KeyMovements()
     {
-        
-        KeyboardState keyboardState = Keyboard.GetState();
+
+
         if (keyboardState.IsKeyDown(Keys.D))
             playerPos.X = Global.PlayerPos.X + playerSpeed.X;
         if (keyboardState.IsKeyDown(Keys.A))
@@ -60,7 +73,7 @@ public class player : Game
         }
         */
 
-        if (Global.PlayerPos.Y >= Window.ClientBounds.Height - Global.Myship.Height)
+        if (Global.PlayerPos.Y >= Global.WindowHeight - Global.Myship.Height)
         {
             countNum = 0;
             playerSpeed.Y = 0f;
@@ -72,10 +85,12 @@ public class player : Game
 
             Global.Touch = true;
         }
-        else if (((Global.PlayerPos.Y == Window.ClientBounds.Height - Global.Myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+
+        else if (((Global.PlayerPos.Y == Global.WindowHeight - Global.Myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
         {
             playerSpeed.Y = 4f;
         }
+
         else
         {
             points = 420;
@@ -83,16 +98,17 @@ public class player : Game
             Global.Gravity = 0.89f;
         }
 
-        if (((Global.PlayerPos.X == Window.ClientBounds.Width - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+        if (((Global.PlayerPos.X == Global.WindowWidth - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
         {
             playerSpeed.X = 0f;
         }
-        else if (((Global.PlayerPos.X == Window.ClientBounds.Width - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+        else if (((Global.PlayerPos.X == Global.WindowWidth - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
         {
             playerSpeed.X = 4f;
         }
 
-        /*if (keyboardState.IsKeyDown(Keys.E) == true)
+        /*
+        if (keyboardState.IsKeyDown(Keys.E) == true)
         {
             using (StreamWriter writefile = new StreamWriter(blockFile))
             {
@@ -100,7 +116,8 @@ public class player : Game
                 writefile.Write("false" + "," + Global.Split[1] + "," + Global.Split[2]);
                 writefile.Close();
             }
-        }*/
+        }
+        */
     }
 }
 

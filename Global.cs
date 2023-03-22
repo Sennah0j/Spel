@@ -11,10 +11,12 @@ using System.Threading;
 public class Global
 {
     static string[] splitBlockStr;
+    static int windowWidth, windowHeight;
     static Texture2D myship;
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool touch;
+
 
     public static string[] Split
     {
@@ -52,5 +54,16 @@ public class Global
         get { return playerPos; }
         set { playerPos = value; }
     }
-   
+
+    public static int WindowWidth
+    {
+        get { return windowWidth; }
+        set { windowWidth = value; }
+    }
+
+    public static int WindowHeight
+    {
+        get { return windowHeight; }
+        set { windowHeight = value; }
+    }
 }
