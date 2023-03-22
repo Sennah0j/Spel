@@ -9,29 +9,32 @@ using System.Threading;
 
 namespace Pong
 {
-    
-    public class Game1 : Game 
-    {
-        player Player = new player();
 
-        string blockFile = "File",blockRead, place;
-        
+    public class Game1 : Game
+    {
+
+
+
+        string blockFile = "File", blockRead, place;
+
+
 
         double mathPow;
         static int points = 0, countNum = 0;
         bool wPress = false;
-        float gravity, gravitySpeed;
-        
+        float gravity, gravitySpeed, timeJump;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D platform;
-        
-        
+
+
         Texture2D coin;
         Texture2D tripod;
         static Vector2 playerPos, playerSpeed, myshipSpeedDown;
+
         Vector2 coin_pos;
-        Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
+        Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         Rectangle rec_myship;
@@ -42,22 +45,23 @@ namespace Pong
         SpriteFont gameFont;
 
 
-        
-        
 
-        
+
+
+
         public Game1()
         {
 
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            
+
         }
         public TimeSpan ElapsedGameTime { get; set; }
 
         protected override void Initialize()
-        {   
+        {
+
             Random slump = new Random();
             for (int i = 0; i < 5; i++)
             {
@@ -66,7 +70,7 @@ namespace Pong
                 coin_pos_list.Add(coin_pos);
             }
 
-            
+
 
             for (int i = 0; i < 5; i++)
             {
@@ -75,14 +79,14 @@ namespace Pong
 
                 tripod_pos_list.Add(tripod_pos);
             }
-            
-            
-            
+
+
+
             // TODO: Add your initialization logic here
             playerPos.X = 100;
             playerPos.Y = 100;
-            playerSpeed.X = 4f;
-            playerSpeed.Y = 4f;
+            playerSpeed.X = 5f;
+            playerSpeed.Y = 5f;
             myshipSpeedDown.Y = 4f;
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
@@ -95,15 +99,24 @@ namespace Pong
             playerPos.X = 10;
 
 
-            
+
 
             base.Initialize();
-            
+
         }
-        
-        
 
 
+
+        public static Vector2 PlayerSpeed
+        {
+            get { return playerSpeed; }
+            set { playerSpeed = value; }
+        }
+        public static Vector2 PlayerPos
+        {
+            get { return playerPos; }
+            set { playerPos = value; }
+        }
 
         protected override void LoadContent()
         {
@@ -113,12 +126,12 @@ namespace Pong
             // TODO: use this.Content to load your game content here
             coin = Content.Load<Texture2D>("Sprites/coin");
             Global.Myship = Content.Load<Texture2D>("Sprites/slime");
-            tripod = Content.Load < Texture2D>("Sprites/tripod");
+            tripod = Content.Load<Texture2D>("Sprites/tripod");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
 
-            
+
 
         }
 
@@ -133,7 +146,7 @@ namespace Pong
 
             }
         }
-        
+
         public void KeyInput()
         {
             KeyboardState keyboardState = Keyboard.GetState();
@@ -144,7 +157,7 @@ namespace Pong
 
             //if (keyboardState.IsKeyDown(Keys.S))
             //myship_pos.Y = myship_pos.Y + myship_speed.Y;
-
+            /*
             blockRead = File.ReadAllText(blockFile);
             Global.Split = blockRead.Split(',');
             if (playerPos.Y == float.Parse(Global.Split[2]))
@@ -152,7 +165,7 @@ namespace Pong
                 
                 gravity = 0f;
                 points = 69;
-                touch = true;
+                Global.Touch = true;
             }
             else
             {
@@ -161,40 +174,40 @@ namespace Pong
                 
                 gravity = 0.89f;
             }
+            */
 
-
-            if (playerPos.Y >= Window.ClientBounds.Height - myship.Height)
+            if (playerPos.Y >= Window.ClientBounds.Height - Global.Myship.Height)
             {
                 countNum = 0;
-                playerSpeed.Y = 0f;
+                playerSpeed.Y = 5f;
                 myshipSpeedDown.Y = 0f;
                 gravitySpeed = 0f;
                 gravity = 0f;
-                timeJump= 0f;
-                points = 69;
 
-                touch = true;
+                Global.Points = 69;
+
+                Global.Touch = true;
             }
-            else if (((playerPos.Y == Window.ClientBounds.Height - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+            else if (((playerPos.Y == Window.ClientBounds.Height - Global.Myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
             {
-                playerSpeed.Y = 4f;
+                playerSpeed.Y = 5f;
             }
             else
             {
                 points = 420;
                 gravitySpeed = 7f;
-                gravity= 0.89f;
+                gravity = 0.89f;
             }
 
-            if (((playerPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+            if (((playerPos.X >= Window.ClientBounds.Width - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
             {
                 playerSpeed.X = 0f;
             }
-            else if (((playerPos.X == Window.ClientBounds.Width - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+            else if (((playerPos.X >= Window.ClientBounds.Width - Global.Myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
             {
-                playerSpeed.X = 4f;
+                playerSpeed.X = 5f;
             }
-            
+
             if (keyboardState.IsKeyDown(Keys.E) == true)
             {
                 using (StreamWriter writefile = new StreamWriter(blockFile))
@@ -206,7 +219,7 @@ namespace Pong
             }
 
         }
-        
+
         public void EnemySPeed()
         {
             for (int i = 0; i < tripod_pos_list.Count; i++)
@@ -214,7 +227,7 @@ namespace Pong
                 tripod_pos_list[i] = tripod_pos_list[i] + tripod_speed;
             }
         }
-        public void EnemyRndLocation(int j) 
+        public void EnemyRndLocation(int j)
         {
             Random slump = new Random();
             for (int i = 0; i < 5; i++)
@@ -235,20 +248,28 @@ namespace Pong
                 }
             }
         }
+
+        public void Test()
+        {
+            player Player = new player();
+            Player.KeyMovements();
+        }
+    
         protected override void Update(GameTime gameTime) 
         {
             
+
             KeyboardState keyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            KeyInput();
-            //Player.KeyMovements();
+            //KeyInput();
 
+            Test();
             
             
-            Global.TimeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (keyboardState.IsKeyDown(Keys.W) && (Global.Touch == true))
+            timeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (keyboardState.IsKeyDown(Keys.W) && (Global.Touch  == true))
             {
                 
                 playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.99));
@@ -261,12 +282,12 @@ namespace Pong
                 mathPow = 10;
                 Global.Touch = false;
             }
-            else if (Global.TimeJump >= 2)
+            else if (timeJump >= 2)
             {
 
                 Global.Touch = false;
             }
-            playerPos.Y += (gravity * Global.TimeJump * gravitySpeed);
+            playerPos.Y += (gravity * timeJump * gravitySpeed);
 
 
 
@@ -362,7 +383,7 @@ namespace Pong
             }
 
             
-            _spriteBatch.DrawString(gameFont, "Poäng:" + mouse.Position.ToString(), new Vector2(10, 10), Color.White);
+            _spriteBatch.DrawString(gameFont, "Poäng:" + Global.Points, new Vector2(10, 10), Color.White);
             _spriteBatch.Draw(Global.Myship, playerPos, Color.White);
 
             _spriteBatch.End();

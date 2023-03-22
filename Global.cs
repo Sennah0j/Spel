@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+
 public class Global
 {
     static string[] splitBlockStr;
@@ -15,12 +16,18 @@ public class Global
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool touch;
+    static int points;
 
     public static string[] Split
     {
         
         get { return splitBlockStr; }
         set { splitBlockStr = value; }
+    }
+    public static int Points
+    {
+        get { return points; }
+        set { points = value; }
     }
 
     public static Texture2D Myship

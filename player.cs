@@ -9,16 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
 
 
 
-public class player : Game
+public class player : Game1
 {
 
      
@@ -31,13 +26,14 @@ public class player : Game
     
     public void KeyMovements()
     {
-        
+        playerSpeed = Game1.PlayerSpeed;
+        playerPos = Game1.PlayerPos;
         KeyboardState keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.D))
             playerPos.X = Global.PlayerPos.X + playerSpeed.X;
         if (keyboardState.IsKeyDown(Keys.A))
             playerPos.X = Global.PlayerPos.X - playerSpeed.X;
-        Global.PlayerPos = playerPos;
+       
 
         //if (keyboardState.IsKeyDown(Keys.S))
         //myship_pos.Y = myship_pos.Y + myship_speed.Y;
@@ -60,7 +56,7 @@ public class player : Game
         }
         */
 
-        if (Global.PlayerPos.Y >= Window.ClientBounds.Height - Global.Myship.Height)
+        if (playerPos.Y >= Window.ClientBounds.Height - Global.Myship.Height)
         {
             countNum = 0;
             playerSpeed.Y = 0f;
