@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-public class Global
+public static class Global
 {
     static string[] splitBlockStr;
     static int windowWidth, windowHeight;
-    static Texture2D myship;
+   
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool touch;
@@ -25,12 +25,7 @@ public class Global
         set { splitBlockStr = value; }
     }
 
-    public static Texture2D Myship
-    {
-        get { return myship; }
-        set { myship = value; }
-    }
-
+    
     public static float TimeJump
     {
         get { return timeJump; }
