@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-public static class Global
+public static class GlobalConst
 {
     static string[] splitBlockStr;
     static int windowWidth, windowHeight;
-   
+    static string blockFile = "File";
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool touch;
@@ -25,7 +25,12 @@ public static class Global
         set { splitBlockStr = value; }
     }
 
-    
+    public static string BlockFile
+    {
+        get { return blockFile; }
+        set { blockFile = value; }
+    }
+
     public static float TimeJump
     {
         get { return timeJump; }

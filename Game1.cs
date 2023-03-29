@@ -14,7 +14,7 @@ namespace Pong
     {
         
 
-        string blockFile = "File",blockRead, place;
+        string blockRead, place;
         
 
         
@@ -39,6 +39,7 @@ namespace Pong
         Rectangle platformVis;
         MouseState mouse;
         Player player = new Player();
+        Plattforms plattformsClass = new Plattforms();
 
         SpriteFont gameFont;
 
@@ -54,12 +55,12 @@ namespace Pong
             IsMouseVisible = true;
             
         }
-        //public TimeSpan ElapsedGameTime { get; set; }
+   
 
         protected override void Initialize()
         {
-            Global.WindowWidth = Window.ClientBounds.Width;
-            Global.WindowHeight = Window.ClientBounds.Height;
+            GlobalConst.WindowWidth = Window.ClientBounds.Width;
+            GlobalConst.WindowHeight = Window.ClientBounds.Height;
             
 
             
@@ -80,22 +81,18 @@ namespace Pong
 
                 tripod_pos_list.Add(tripod_pos);
             }
-            
-            
-            
+
+
+
             // TODO: Add your initialization logic here
-            player.playerPos.X = 100;
-            player.playerPos.Y = 100;
-            player.playerSpeed.X = 4f;
-            player.playerSpeed.Y = 4f;
-            player.myshipSpeedDown.Y = 4f;
+            player.IntiPlayerCont();
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
             tripodTest.X = 0f;
             tripodTest.Y = 0f;
             tripod_pos2.X = 0;
             tripod_pos2.Y = 0;
-            player.gravity = 0.2f;
+            
             
             
 
@@ -122,24 +119,19 @@ namespace Pong
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
-
+            
         }
 
 
-        public void Jump()
+
+        
+
+        public void PlattformSpawn()
         {
-
-            KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.W) && (Global.Touch = true))
-            {
-                //gravity = -2f;
-
-            }
+            plattformsClass.Platform1();
+            plattformsClass.Platform2();
+            plattformsClass.Platform3();
         }
-        
-        
-
-        
         
         
         public void EnemySPeed()
@@ -176,18 +168,20 @@ namespace Pong
             KeyboardState keyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             
+            PlattformSpawn();
             player.Gravity(gameTime);
             player.KeyMovements();
-            
+
             
 
-            //BoundaryCheckEn();
-            //EnemySPeed();
+            BoundaryCheckEn();
+            EnemySPeed();
 
             CheckCollisionEn();
             Cursor();
+
+     
 
             
             base.Update(gameTime);
@@ -212,7 +206,7 @@ namespace Pong
                 if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
                 {
                     points += 10;
-                    tripod_pos_list.RemoveAt(i);
+                    
                 }
             }
 
@@ -226,15 +220,15 @@ namespace Pong
             if (mouse.LeftButton == ButtonState.Pressed)
             {
 
-                blockRead = File.ReadAllText(blockFile);
-                Global.Split = blockRead.Split(',');
-                if (Global.Split[0] == "true") 
+                blockRead = File.ReadAllText(GlobalConst.BlockFile);
+                GlobalConst.Split = blockRead.Split(',');
+                if (GlobalConst.Split[0] == "true") 
                 {
                     
                 }
                 else
                 {
-                    using (StreamWriter writefile = new StreamWriter(blockFile))
+                    using (StreamWriter writefile = new StreamWriter(GlobalConst.BlockFile))
                     {
                         place = "true";
                         writefile.Write(place + "," + mouse.Position.X + "," + mouse.Position.Y);
@@ -245,14 +239,7 @@ namespace Pong
             
         }
 
-        public Rectangle recta()
-        {
-            
-            blockRead = File.ReadAllText(blockFile);
-            Global.Split = blockRead.Split(",");
-            //                   X   Y   Xlång   Ytjock
-            return new Rectangle(int.Parse(Global.Split[1]), int.Parse(Global.Split[2]), 400, 50);
-        }
+        
         protected override void Draw(GameTime gameTime)
         {
             
@@ -262,7 +249,9 @@ namespace Pong
             _spriteBatch.Begin();
 
             
-            _spriteBatch.Draw(platform, recta() , Color.Black);
+            _spriteBatch.Draw(platform, plattformsClass.Platform1() , Color.Black);
+            _spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
+            _spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
 
             foreach (Vector2 cn in coin_pos_list)
             {

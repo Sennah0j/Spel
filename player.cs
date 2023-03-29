@@ -11,16 +11,25 @@ public class Player
 
     
     public Vector2 playerSpeed, myshipSpeedDown;
+
     public Vector2 playerPos;
     public Texture2D myship;
     public double mathPow = 1;
     string blockRead, place;
     public string testStr, blockFile = "File";
     int points, countNum;
-    public float timeJump, gravity, gravitySpeed;
+    public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
     //public TimeSpan ElapsedGameTime { get; set; }
 
+    public void IntiPlayerCont()
+    {
+        myshipSpeedDown.Y = 4f;
+        playerPos.X = 100;
+        playerPos.Y = 100;
+        playerSpeed.X = 4f;
+        playerSpeed.Y = 4f;
+    } 
     public void Gravity(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
@@ -47,6 +56,7 @@ public class Player
     }
     public void KeyMovements()
     {
+        
         KeyboardState keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.D))
             playerPos.X = playerPos.X + playerSpeed.X;
@@ -57,8 +67,8 @@ public class Player
         //myship_pos.Y = myship_pos.Y + myship_speed.Y;
 
         blockRead = File.ReadAllText(blockFile);
-        Global.Split = blockRead.Split(',');
-        if (playerPos.Y == float.Parse(Global.Split[2]))
+        GlobalConst.Split = blockRead.Split(',');
+        if (playerPos.Y == float.Parse(GlobalConst.Split[2]))
         {
 
             gravity = 0f;
@@ -74,7 +84,7 @@ public class Player
         }
         
 
-        if (playerPos.Y >= Global.WindowHeight - myship.Height)
+        if (playerPos.Y >= GlobalConst.WindowHeight - myship.Height)
         {
             countNum = 0;
             playerSpeed.Y = 0f;
@@ -86,7 +96,7 @@ public class Player
 
             touch = true;
         }
-        else if (((playerPos.Y == Global.WindowHeight - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+        else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
         {
             playerSpeed.Y = 4f;
         }
@@ -96,24 +106,24 @@ public class Player
             gravitySpeed = 7f;
             gravity = 0.89f;
         }
-        if (((playerPos.X == Global.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+        if (((playerPos.X == GlobalConst.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
         {
             playerSpeed.X = 0f;
         }
-        else if (((playerPos.X == Global.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+        else if (((playerPos.X == GlobalConst.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
         {
             playerSpeed.X = 4f;
         }
-        /*
+        
         if (keyboardState.IsKeyDown(Keys.E) == true)
         {
             using (StreamWriter writefile = new StreamWriter(blockFile))
             {
 
-                writefile.Write("false" + "," + Global.Split[1] + "," + Global.Split[2]);
+                writefile.Write("false" + "," + GlobalConst.Split[1] + "," + GlobalConst.Split[2]);
                 writefile.Close();
             }
         }
-        */
+        
     }
 }
