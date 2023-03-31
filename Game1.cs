@@ -22,19 +22,19 @@ namespace Pong
         bool wPress = false;
                 
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        Texture2D platform;
+        private SpriteBatch spriteBatch;
+        Texture2D platform, touchPlat;
         Texture2D myship;
         
         Texture2D coin;
         Texture2D tripod;
-       
+        Color backColor = Color.BurlyWood;
         
         Vector2 coin_pos;
         Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
-        Rectangle rec_myship;
+        public Rectangle rec_myship;
         Rectangle rec_coin;
         Rectangle platformVis;
         MouseState mouse;
@@ -109,7 +109,7 @@ namespace Pong
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             gameFont = Content.Load<SpriteFont>("Utskrift/GameFont2");
 
             // TODO: use this.Content to load your game content here
@@ -119,7 +119,10 @@ namespace Pong
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
+            touchPlat = new Texture2D(GraphicsDevice, 1, 1);
             
+
+
         }
 
 
@@ -131,6 +134,7 @@ namespace Pong
             plattformsClass.Platform1();
             plattformsClass.Platform2();
             plattformsClass.Platform3();
+            plattformsClass.CheckColission();
         }
         
         
@@ -191,10 +195,10 @@ namespace Pong
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
             {
-                rec_myship = new Rectangle(Convert.ToInt32(player.playerPos.X), Convert.ToInt32(player.playerPos.Y), player.myship.Width, player.myship.Height);
+                GlobalConst.RecMyship = new Rectangle(Convert.ToInt32(player.playerPos.X), Convert.ToInt32(player.playerPos.Y), player.myship.Width, player.myship.Height);
                 rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
 
-                if (rec_myship.Intersects(rec_coin))
+                if (GlobalConst.RecMyship.Intersects(rec_coin))
                 {
                     points += 10;
                     coin_pos_list.Remove(cn);
@@ -243,30 +247,36 @@ namespace Pong
         protected override void Draw(GameTime gameTime)
         {
             
-            GraphicsDevice.Clear(Color.BurlyWood);
+            GraphicsDevice.Clear(backColor);
             
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            spriteBatch.Begin();
 
             
-            _spriteBatch.Draw(platform, plattformsClass.Platform1() , Color.Black);
-            _spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
-            _spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
-
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform1() ,backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform3(), backColor);
+            spriteBatch.Draw(platform, plattformsClass.Platform4(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform5(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform6(), Color.Black);
+            /*
             foreach (Vector2 cn in coin_pos_list)
             {
-                _spriteBatch.Draw(coin, cn, Color.White);
+                spriteBatch.Draw(coin, cn, Color.White);
             }
+            */
             foreach (Vector2 cn in tripod_pos_list)
             {
-                _spriteBatch.Draw(tripod, cn, Color.White);
+                spriteBatch.Draw(tripod, cn, Color.White);
             }
 
             
-            _spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow , new Vector2(10, 10), Color.White);
-            _spriteBatch.Draw(player.myship, player.playerPos, Color.White);
+            spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow , new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X."+ mouse.X + " " +plattformsClass.recTouch, new Vector2(10, 30), Color.White);
+            spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
+            spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
-            _spriteBatch.End();
+            spriteBatch.End();
             
 
             base.Draw(gameTime);

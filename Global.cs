@@ -15,9 +15,14 @@ public static class GlobalConst
     static string blockFile = "File";
     static Vector2 playerPos;
     static float timeJump, gravity;
-    static bool touch;
+    static bool recTouch;
+    static Rectangle recMyship;
 
-
+    public static Rectangle RecMyship
+    {
+        get { return recMyship; }
+        set { recMyship = value; }
+    }
     public static string[] Split
     {
         
@@ -37,10 +42,10 @@ public static class GlobalConst
         set { timeJump = value; }
     }
 
-    public static bool Touch
+    public static bool RecTouch
     {
-        get { return touch; }
-        set { touch = value; }
+        get { return recTouch; }
+        set { recTouch = value; }
     }
 
     public static float Gravity

@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading;
 public class Player
 {
-
     
+
     public Vector2 playerSpeed, myshipSpeedDown;
 
     public Vector2 playerPos;
@@ -21,7 +21,7 @@ public class Player
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
     //public TimeSpan ElapsedGameTime { get; set; }
-
+    
     public void IntiPlayerCont()
     {
         myshipSpeedDown.Y = 4f;
@@ -82,9 +82,9 @@ public class Player
 
             gravity = 0.89f;
         }
-        
 
-        if (playerPos.Y >= GlobalConst.WindowHeight - myship.Height)
+        
+        if ((playerPos.Y >= GlobalConst.WindowHeight - myship.Height) || (GlobalConst.RecTouch))
         {
             countNum = 0;
             playerSpeed.Y = 0f;
@@ -96,6 +96,10 @@ public class Player
 
             touch = true;
         }
+        
+        
+
+        
         else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
         {
             playerSpeed.Y = 4f;
