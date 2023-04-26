@@ -40,7 +40,7 @@ namespace Pong
         MouseState mouse;
         Player player = new Player();
         Plattforms plattformsClass = new Plattforms();
-
+        Bullet bulletClass = new Bullet();
         SpriteFont gameFont;
 
 
@@ -86,6 +86,7 @@ namespace Pong
 
             // TODO: Add your initialization logic here
             player.IntiPlayerCont();
+            
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
             tripodTest.X = 0f;
@@ -116,6 +117,7 @@ namespace Pong
             coin = Content.Load<Texture2D>("Sprites/coin");
             player.myship = Content.Load<Texture2D>("Sprites/slime");
             tripod = Content.Load < Texture2D>("Sprites/tripod");
+            bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
@@ -177,6 +179,7 @@ namespace Pong
             player.Gravity(gameTime);
             player.KeyMovements();
 
+            bulletClass.bulletMethod();
             
 
             BoundaryCheckEn();
@@ -252,7 +255,11 @@ namespace Pong
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            
+            foreach (Vector2 bullets in bulletClass.bulletsList)
+            {
+                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
+            }
+
             spriteBatch.Draw(touchPlat, plattformsClass.Platform1() ,backColor);
             spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
             spriteBatch.Draw(touchPlat, plattformsClass.Platform3(), backColor);
