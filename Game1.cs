@@ -86,6 +86,7 @@ namespace Pong
 
             // TODO: Add your initialization logic here
             player.IntiPlayerCont();
+            bulletClass.Vector2Def();
             
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
@@ -247,6 +248,8 @@ namespace Pong
         }
 
         
+
+        
         protected override void Draw(GameTime gameTime)
         {
             
@@ -258,7 +261,9 @@ namespace Pong
             foreach (Vector2 bullets in bulletClass.bulletsList)
             {
                 spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
+                
             }
+            
 
             spriteBatch.Draw(touchPlat, plattformsClass.Platform1() ,backColor);
             spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
@@ -281,6 +286,7 @@ namespace Pong
             spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow , new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X."+ mouse.X + " " +plattformsClass.recTouch, new Vector2(10, 30), Color.White);
             spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
+            spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2 (10, 70), Color.White);
             spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
             spriteBatch.End();

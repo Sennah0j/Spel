@@ -17,25 +17,35 @@ public class Bullet
 	List<Vector2> bulletSpeedList = new List<Vector2>();
 	Rectangle bulletRec;
     Vector2 tempBull;
+	Vector2 tempBullSpeed;
 
     public void Vector2Def()
 	{
-		
-	}
+		tempBullSpeed.Y = 2f;
+		tempBullSpeed.X = 2f;
+		bulletPos.X = playerClass.playerPos.X;
+        bulletPos.Y = playerClass.playerPos.Y;
+		bulletSpeed.X = 0f;
+        bulletSpeed.Y = 0f;
+
+    }
 	public void bulletMethod()
 	{
         KeyboardState keyboardState = Keyboard.GetState();
         MouseState mouse = Mouse.GetState();
 
-        if (mouse.LeftButton == ButtonState.Pressed)
+		if (mouse.LeftButton == ButtonState.Pressed)
 		{
 			bulletPos.X = playerClass.playerPos.X;
 			bulletPos.Y = playerClass.playerPos.Y;
 			bulletsList.Add(bulletPos);
-
-			bulletSpeed.Y = ((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X)) * bulletPos.X;
-			bulletSpeed.X = 2f;
+		}
+			/*
+			bulletSpeed.Y = 2f;
+            //((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X)) * bulletPos.X;
+            bulletSpeed.X = 2f;
 			bulletSpeedList.Add(bulletSpeed);
+			
 		}
 		for (int i = 0; i < bulletsList.Count; i++)
 		{
@@ -43,8 +53,8 @@ public class Bullet
 			tempBull.X = bulletsList.ElementAt(i).X;
 			tempBull.Y = bulletsList.ElementAt(i).Y;
 
-			tempBull.Y = tempBull.Y - bulletSpeed.Y;
+			tempBull.Y = tempBull.Y - tempBullSpeed.Y;
 		}
-		
+		*/
     }
 }
