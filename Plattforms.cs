@@ -18,9 +18,14 @@ public class Plattforms
     
     public  Rectangle Platform1()
     {
-
+        if (!File.Exists(GlobalConst.BlockFile))
+        {
+            using (StreamWriter writeFile = new StreamWriter(GlobalConst.BlockFile))
+                writeFile.WriteLine(("200,345,400,10"));
+        }
         blockRead = File.ReadAllText(GlobalConst.BlockFile);
         GlobalConst.Split = blockRead.Split(",");
+        
         //                   X   Y   Xlång   Ytjock
         return platform1 = new Rectangle(200, 345, 400, 10);
         

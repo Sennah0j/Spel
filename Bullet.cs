@@ -21,32 +21,27 @@ public class Bullet
 
     public void Vector2Def()
 	{
-		tempBullSpeed.Y = 2f;
-		tempBullSpeed.X = 2f;
-		bulletPos.X = playerClass.playerPos.X;
-        bulletPos.Y = playerClass.playerPos.Y;
-		bulletSpeed.X = 0f;
-        bulletSpeed.Y = 0f;
+	
 
     }
 	public void bulletMethod()
 	{
+        bulletPos = GlobalConst.PlayerPos;
         KeyboardState keyboardState = Keyboard.GetState();
         MouseState mouse = Mouse.GetState();
 
 		if (mouse.LeftButton == ButtonState.Pressed)
 		{
-			bulletPos.X = playerClass.playerPos.X;
-			bulletPos.Y = playerClass.playerPos.Y;
+			bulletPos = GlobalConst.PlayerPos;
 			bulletsList.Add(bulletPos);
 		}
-			/*
-			bulletSpeed.Y = 2f;
-            //((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X)) * bulletPos.X;
+			
+			bulletSpeed.Y = ((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X)) * bulletPos.X;
             bulletSpeed.X = 2f;
 			bulletSpeedList.Add(bulletSpeed);
 			
-		}
+		
+
 		for (int i = 0; i < bulletsList.Count; i++)
 		{
 
@@ -55,6 +50,6 @@ public class Bullet
 
 			tempBull.Y = tempBull.Y - tempBullSpeed.Y;
 		}
-		*/
+		
     }
 }
