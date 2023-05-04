@@ -10,7 +10,7 @@ using System.Threading;
 namespace Pong
 {
     
-    public class Game1 : Game 
+    public class Main : Game 
     {
         
 
@@ -47,7 +47,7 @@ namespace Pong
         
         
         
-        public Game1()
+        public Main()
         {
 
             _graphics = new GraphicsDeviceManager(this);
@@ -130,7 +130,11 @@ namespace Pong
 
 
 
-        
+        public void BulletUpdate(GameTime gameTime)
+        {
+            bulletClass.bulletMethod(gameTime);
+            bulletClass.BulletSpeedUp();
+        }
 
         public void PlattformSpawn()
         {
@@ -180,7 +184,8 @@ namespace Pong
             player.Gravity(gameTime);
             player.KeyMovements();
 
-            bulletClass.bulletMethod();
+            BulletUpdate(gameTime);
+            
             
 
             BoundaryCheckEn();

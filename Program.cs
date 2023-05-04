@@ -1,3 +1,3 @@
 ﻿
-using var game = new Pong.Game1();
+using var game = new Pong.Main();
 game.Run();

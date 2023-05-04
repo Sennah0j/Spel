@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 
 public class Bullet
@@ -24,32 +25,60 @@ public class Bullet
 	
 
     }
-	public void bulletMethod()
+	public void bulletMethod(GameTime gameTime)
 	{
         bulletPos = GlobalConst.PlayerPos;
         KeyboardState keyboardState = Keyboard.GetState();
         MouseState mouse = Mouse.GetState();
+        tempBullSpeed.Y = 2f;
+        tempBullSpeed.X = 2f;
+        double timeSinceLastBullet= 0;
 
-		if (mouse.LeftButton == ButtonState.Pressed)
+        double totalSpeed = 10, angle;
+
+        if ((mouse.LeftButton == ButtonState.Pressed) && (gameTime.TotalGameTime.TotalMilliseconds > (timeSinceLastBullet + 600)))
 		{
+
+
 			bulletPos = GlobalConst.PlayerPos;
-			bulletsList.Add(bulletPos);
-		}
-			
-			bulletSpeed.Y = ((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X)) * bulletPos.X;
-            bulletSpeed.X = 2f;
-			bulletSpeedList.Add(bulletSpeed);
-			
-		
 
-		for (int i = 0; i < bulletsList.Count; i++)
-		{
+            angle = Math.Atan((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X));
 
-			tempBull.X = bulletsList.ElementAt(i).X;
-			tempBull.Y = bulletsList.ElementAt(i).Y;
+            if (bulletPos.X > (mouse.Position.X))
+            {
+                bulletSpeed.X = (float)Math.Round(Math.Cos(angle) * totalSpeed, 7);
+                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle) * totalSpeed, 7);
+            }
+            else
+            {
+                bulletSpeed.X = (float)Math.Round(Math.Cos(angle + Math.PI) * totalSpeed, 7);
+                bulletSpeed.Y = (float)Math.Round(Math.Sin(angle + Math.PI) * totalSpeed, 7);
+            }
 
-			tempBull.Y = tempBull.Y - tempBullSpeed.Y;
-		}
-		
+            bulletsList.Add(bulletPos);
+            bulletSpeedList.Add(bulletSpeed);
+
+            timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+        }
+
+        for (int i = 0; i < bulletsList.Count; i++)
+        {
+
+            tempBull.X = bulletsList.ElementAt(i).X;
+            tempBull.Y = bulletsList.ElementAt(i).Y;
+
+            tempBull.Y = tempBull.Y - bulletSpeedList[i].Y;
+            tempBull.X = tempBull.X - bulletSpeedList[i].X;
+
+            bulletsList[i] = tempBull;
+
+        }
+
+
+    }
+
+	public void BulletSpeedUp()
+	{
+        
     }
 }
