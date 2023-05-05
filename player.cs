@@ -10,7 +10,7 @@ public class Player
 {
     
     public Vector2 playerSpeed, myshipSpeedDown;
-
+    public Rectangle recMyShip;
     public Vector2 playerPos;
     public Texture2D myship;
     public double mathPow = 1;
@@ -36,6 +36,9 @@ public class Player
         playerPos.Y = 100;
         playerSpeed.X = 4f;
         playerSpeed.Y = 4f;
+
+        GlobalConst.MyShip = myship;
+        
     } 
     public void Gravity(GameTime gameTime)
     {

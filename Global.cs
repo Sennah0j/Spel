@@ -17,7 +17,13 @@ public static class GlobalConst
     static float timeJump, gravity;
     static bool recTouch;
     static Rectangle recMyship;
+    static Texture2D myShip;
 
+    public static Texture2D MyShip
+    {
+        get { return myShip; }
+        set { myShip = value; }
+    }
     public static Rectangle RecMyship
     {
         get { return recMyship; }

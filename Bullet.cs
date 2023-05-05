@@ -19,7 +19,8 @@ public class Bullet
 	Rectangle bulletRec;
     Vector2 tempBull;
 	Vector2 tempBullSpeed;
-
+    public bool pressed = false;
+    double timeSinceLastBullet = 0;
     public void Vector2Def()
 	{
 	
@@ -32,15 +33,18 @@ public class Bullet
         MouseState mouse = Mouse.GetState();
         tempBullSpeed.Y = 2f;
         tempBullSpeed.X = 2f;
-        double timeSinceLastBullet= 0;
+        
+        
 
         double totalSpeed = 10, angle;
 
-        if ((mouse.LeftButton == ButtonState.Pressed) && (gameTime.TotalGameTime.TotalMilliseconds > (timeSinceLastBullet + 600)))
+        if ((mouse.LeftButton == ButtonState.Pressed) && (pressed == false))
 		{
 
+            
 
-			bulletPos = GlobalConst.PlayerPos;
+            bulletPos.X = ((GlobalConst.PlayerPos.X) + (GlobalConst.RecMyship.Width / 2));
+            bulletPos.Y = (GlobalConst.PlayerPos.Y + (GlobalConst.RecMyship.Height / 2));
 
             angle = Math.Atan((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X));
 
@@ -58,7 +62,13 @@ public class Bullet
             bulletsList.Add(bulletPos);
             bulletSpeedList.Add(bulletSpeed);
 
-            timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+            //timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+            pressed = true;
+        }
+
+        if(mouse.LeftButton == ButtonState.Released)
+        {
+            pressed = false;
         }
 
         for (int i = 0; i < bulletsList.Count; i++)
@@ -77,8 +87,25 @@ public class Bullet
 
     }
 
-	public void BulletSpeedUp()
+	public void BulletBondaryCheck()
 	{
+        for(int i = 0; i < bulletsList.Count; i++)
+        {
+            if (bulletsList.ElementAt(i).X <= 0 || bulletsList.ElementAt(i).X >= GlobalConst.WindowWidth)
+            {
+                bulletsList.RemoveAt(i);
+                bulletSpeedList.RemoveAt(i);
+            }
+        }    
+
+        for(int i = 0; i < bulletsList.Count; i++)
+        {
+            if ((bulletsList.ElementAt(i).Y <= 0) || (bulletsList.ElementAt(i).Y >= GlobalConst.WindowHeight))
+            {
+                bulletsList.RemoveAt(i);
+                bulletSpeedList.RemoveAt(i);
+            }
+        }
         
     }
 }

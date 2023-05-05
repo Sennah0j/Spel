@@ -15,13 +15,13 @@ namespace Pong
         
 
         string blockRead, place;
-        
+        bool F3TF = true, F3Click = false;
 
-        
+
         static int points = 0, countNum = 0;
         bool wPress = false;
                 
-        private GraphicsDeviceManager _graphics;
+        private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         Texture2D platform, touchPlat;
         Texture2D myship;
@@ -50,9 +50,10 @@ namespace Pong
         public Main()
         {
 
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            
             
         }
    
@@ -61,9 +62,12 @@ namespace Pong
         {
             GlobalConst.WindowWidth = Window.ClientBounds.Width;
             GlobalConst.WindowHeight = Window.ClientBounds.Height;
-            
 
-            
+            graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
+
             Random slump = new Random();
             for (int i = 0; i < 5; i++)
             {
@@ -87,6 +91,8 @@ namespace Pong
             // TODO: Add your initialization logic here
             player.IntiPlayerCont();
             bulletClass.Vector2Def();
+
+
             
             tripod_speed.Y = 2f;
             tripod_speed.X = 0f;
@@ -133,7 +139,7 @@ namespace Pong
         public void BulletUpdate(GameTime gameTime)
         {
             bulletClass.bulletMethod(gameTime);
-            bulletClass.BulletSpeedUp();
+            bulletClass.BulletBondaryCheck();
         }
 
         public void PlattformSpawn()
@@ -252,7 +258,38 @@ namespace Pong
             
         }
 
-        
+        public void F3Info()
+        {
+            
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.F3) == true && (F3Click == false))
+            {
+                if (F3TF == true)
+                    F3TF = false;
+                else
+                    F3TF = true;
+                F3Click = true;
+
+                
+            }
+            if( keyboardState.IsKeyUp(Keys.F3) == true)
+            {
+                F3Click = false;
+            }
+
+
+            if (F3TF == true)
+            {
+                spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
+                spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X." + mouse.X + " " + plattformsClass.recTouch, new Vector2(10, 30), Color.White);
+                spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
+                spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
+                spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
+
+            }
+          
+           
+        }
 
         
         protected override void Draw(GameTime gameTime)
@@ -263,11 +300,7 @@ namespace Pong
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            foreach (Vector2 bullets in bulletClass.bulletsList)
-            {
-                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
-                
-            }
+            
             
 
             spriteBatch.Draw(touchPlat, plattformsClass.Platform1() ,backColor);
@@ -287,13 +320,17 @@ namespace Pong
                 spriteBatch.Draw(tripod, cn, Color.White);
             }
 
-            
-            spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow , new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X."+ mouse.X + " " +plattformsClass.recTouch, new Vector2(10, 30), Color.White);
-            spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
-            spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2 (10, 70), Color.White);
+
+            F3Info();
             spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
+
+
+            foreach (Vector2 bullets in bulletClass.bulletsList)
+            {
+                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
+
+            }
             spriteBatch.End();
             
 
