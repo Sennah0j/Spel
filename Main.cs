@@ -24,24 +24,28 @@ namespace Pong
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         Texture2D platform, touchPlat;
-        Texture2D myship;
+        
         
         Texture2D coin;
-        Texture2D tripod;
+        
         Color backColor = Color.BurlyWood;
         
         Vector2 coin_pos;
-        Vector2 tripod_pos,tripod_speed,tripodTest,tripod_pos2;
+        Vector2 origin = new Vector2(GlobalConst.PlayerPos.X, GlobalConst.PlayerPos.Y);
         List<Vector2> coin_pos_list = new List<Vector2>();
-        List<Vector2> tripod_pos_list = new List<Vector2>();
+        
         public Rectangle rec_myship;
         Rectangle rec_coin;
-        Rectangle platformVis;
+       
         MouseState mouse;
+
         Player player = new Player();
         Plattforms plattformsClass = new Plattforms();
         Bullet bulletClass = new Bullet();
+        Enemy EnemyClass = new Enemy();
+
         SpriteFont gameFont;
+
 
 
         
@@ -60,13 +64,15 @@ namespace Pong
 
         protected override void Initialize()
         {
-            GlobalConst.WindowWidth = Window.ClientBounds.Width;
-            GlobalConst.WindowHeight = Window.ClientBounds.Height;
+            GlobalConst.WindowWidth = GraphicsDevice.DisplayMode.Width;
+            GlobalConst.WindowHeight = GraphicsDevice.DisplayMode.Height;
 
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
             graphics.IsFullScreen = true;
             graphics.ApplyChanges();
+
+
 
             Random slump = new Random();
             for (int i = 0; i < 5; i++)
@@ -77,29 +83,19 @@ namespace Pong
             }
 
             
-
-            for (int i = 0; i < 5; i++)
-            {
-                tripod_pos.X = slump.Next(0, Window.ClientBounds.Width - 50);
-                tripod_pos.Y = slump.Next(0, Window.ClientBounds.Height - 400);
-
-                tripod_pos_list.Add(tripod_pos);
-            }
-
+            
+           
 
 
             // TODO: Add your initialization logic here
             player.IntiPlayerCont();
             bulletClass.Vector2Def();
-
+            EnemyClass.SpawnEnemy();
 
             
-            tripod_speed.Y = 2f;
-            tripod_speed.X = 0f;
-            tripodTest.X = 0f;
-            tripodTest.Y = 0f;
-            tripod_pos2.X = 0;
-            tripod_pos2.Y = 0;
+            EnemyClass.tripod_speed.Y = 2f;
+            EnemyClass.tripod_speed.X = 0f;
+            
             
             
             
@@ -123,7 +119,7 @@ namespace Pong
             // TODO: use this.Content to load your game content here
             coin = Content.Load<Texture2D>("Sprites/coin");
             player.myship = Content.Load<Texture2D>("Sprites/slime");
-            tripod = Content.Load < Texture2D>("Sprites/tripod");
+            EnemyClass.tripod = Content.Load < Texture2D>("Sprites/tripod");
             bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
@@ -151,34 +147,7 @@ namespace Pong
         }
         
         
-        public void EnemySPeed()
-        {
-            for (int i = 0; i < tripod_pos_list.Count; i++)
-            {
-                tripod_pos_list[i] = tripod_pos_list[i] + tripod_speed;
-            }
-        }
-        public void EnemyRndLocation(int j) 
-        {
-            Random slump = new Random();
-            for (int i = 0; i < 5; i++)
-            {
-                tripod_pos2.X = slump.Next(0, Window.ClientBounds.Width - 50);
-                tripod_pos2.Y = slump.Next(0, Window.ClientBounds.Height - 400);
 
-                tripod_pos_list[j] = tripod_pos2;
-            }
-        }
-        public void BoundaryCheckEn()
-        {
-            for (int i = 0; i < tripod_pos_list.Count; i++)
-            {
-                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
-                {
-                    EnemyRndLocation(i);
-                }
-            }
-        }
         protected override void Update(GameTime gameTime) 
         {
             
@@ -191,13 +160,15 @@ namespace Pong
             player.KeyMovements();
 
             BulletUpdate(gameTime);
-            
-            
 
-            BoundaryCheckEn();
-            EnemySPeed();
 
+
+            EnemyClass.BoundaryCheckEn();
+            EnemyClass.EnemySPeed();
             CheckCollisionEn();
+            EnemyClass.CheckCollisionEn();
+            
+
             Cursor();
 
      
@@ -206,6 +177,7 @@ namespace Pong
             base.Update(gameTime);
         }
         
+         
         public void CheckCollisionEn()
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
@@ -220,17 +192,11 @@ namespace Pong
 
                 }
             }
-            for (int i = 0; i < tripod_pos_list.Count; i++)
-            {
-                if (tripod_pos_list[i].Y >= (Window.ClientBounds.Height + tripod.Height))
-                {
-                    points += 10;
-                    
-                }
-            }
+           
 
 
         }
+        
 
         public void Cursor()
         {
@@ -309,19 +275,25 @@ namespace Pong
             spriteBatch.Draw(platform, plattformsClass.Platform4(), Color.Black);
             spriteBatch.Draw(platform, plattformsClass.Platform5(), Color.Black);
             spriteBatch.Draw(platform, plattformsClass.Platform6(), Color.Black);
+
             /*
             foreach (Vector2 cn in coin_pos_list)
             {
                 spriteBatch.Draw(coin, cn, Color.White);
             }
             */
-            foreach (Vector2 cn in tripod_pos_list)
+
+            foreach (Vector2 cn in EnemyClass.tripod_pos_list)
             {
-                spriteBatch.Draw(tripod, cn, Color.White);
+                spriteBatch.Draw(EnemyClass.tripod, cn, Color.White);
             }
 
 
             F3Info();
+           
+            //Scale up not good
+            //float scale = 4; //1 = default, 2 = twice the size
+            //spriteBatch.Draw(player.myship ,GlobalConst.PlayerPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
             spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
 
