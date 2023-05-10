@@ -60,19 +60,19 @@ public class Plattforms
     public void CheckColission()
     {
 
-        if(GlobalConst.RecMyship.Intersects(platform1))
+        if(GlobalConst.RecPlayer.Intersects(platform1))
         {
             GlobalConst.RecTouch= true;
             player.playerPos.Y = 340;
            
             
         }
-        else if (GlobalConst.RecMyship.Intersects(platform2))
+        else if (GlobalConst.RecPlayer.Intersects(platform2))
         {
             GlobalConst.RecTouch= true;
             player.playerPos.Y = 170;
         }
-        else if (GlobalConst.RecMyship.Intersects(platform3))
+        else if (GlobalConst.RecPlayer.Intersects(platform3))
         {
             GlobalConst.RecTouch= true;
             player.playerPos.Y = 240;

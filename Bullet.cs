@@ -43,8 +43,8 @@ public class Bullet
 
             
 
-            bulletPos.X = ((GlobalConst.PlayerPos.X) + (GlobalConst.RecMyship.Width / 2));
-            bulletPos.Y = (GlobalConst.PlayerPos.Y + (GlobalConst.RecMyship.Height / 2));
+            bulletPos.X = ((GlobalConst.PlayerPos.X) + (GlobalConst.RecPlayer.Width / 2));
+            bulletPos.Y = (GlobalConst.PlayerPos.Y + (GlobalConst.RecPlayer.Height / 2));
 
             angle = Math.Atan((mouse.Position.Y - bulletPos.Y) / (mouse.Position.X - bulletPos.X));
 

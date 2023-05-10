@@ -12,7 +12,8 @@ namespace Pong
     
     public class Main : Game 
     {
-        
+        const int SCALE = 4; //1 = default, 2 = twice the size
+
 
         string blockRead, place;
         bool F3TF = true, F3Click = false;
@@ -182,10 +183,10 @@ namespace Pong
         {
             foreach (Vector2 cn in coin_pos_list.ToList())
             {
-                GlobalConst.RecMyship = new Rectangle(Convert.ToInt32(player.playerPos.X), Convert.ToInt32(player.playerPos.Y), player.myship.Width, player.myship.Height);
+                GlobalConst.RecPlayer = new Rectangle(player.playerPos.ToPoint(), new Point(player.myship.Width * SCALE, player.myship.Height * SCALE));
                 rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
 
-                if (GlobalConst.RecMyship.Intersects(rec_coin))
+                if (GlobalConst.RecPlayer.Intersects(rec_coin))
                 {
                     points += 10;
                     coin_pos_list.Remove(cn);
@@ -246,7 +247,7 @@ namespace Pong
 
             if (F3TF == true)
             {
-                spriteBatch.DrawString(gameFont, "Poäng:" + player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
+                spriteBatch.DrawString(gameFont, player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
                 spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X." + mouse.X + " " + plattformsClass.recTouch, new Vector2(10, 30), Color.White);
                 spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
                 spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
@@ -264,7 +265,7 @@ namespace Pong
             GraphicsDevice.Clear(backColor);
             
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             
             
@@ -292,9 +293,8 @@ namespace Pong
             F3Info();
            
             //Scale up not good
-            //float scale = 4; //1 = default, 2 = twice the size
-            //spriteBatch.Draw(player.myship ,GlobalConst.PlayerPos, null, Color.White, 0, origin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(player.myship, player.playerPos, Color.White);
+            spriteBatch.Draw(player.myship ,GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
+            //spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
 
 

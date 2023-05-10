@@ -57,7 +57,7 @@ public class Player
             mathPow = 10;
             touch = false;
         }
-        else if (timeJump >= 2)
+        else if (timeJump >= 5)
         {
             touch = false;
         }
@@ -99,7 +99,7 @@ public class Player
         }
 
         
-        if ((playerPos.Y >= GlobalConst.WindowHeight - myship.Height) || (GlobalConst.RecTouch))
+        if ((playerPos.Y >= GlobalConst.WindowHeight - myship.Height * 4) || (GlobalConst.RecTouch))
         {
             countNum = 0;
             playerSpeed.Y = 0f;
@@ -114,8 +114,8 @@ public class Player
         
         
 
-        
-        else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
+        //                                                                 SCALE
+        else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height * 4) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true))
         {
             playerSpeed.Y = 4f;
         }
@@ -125,11 +125,11 @@ public class Player
             gravitySpeed = 7f;
             gravity = 0.89f;
         }
-        if (((playerPos.X == GlobalConst.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
+        if (((playerPos.X == GlobalConst.WindowWidth - myship.Width * 4) && keyboardState.IsKeyDown(Keys.D) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.A) == true))
         {
             playerSpeed.X = 0f;
         }
-        else if (((playerPos.X == GlobalConst.WindowWidth - myship.Width) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
+        else if (((playerPos.X == GlobalConst.WindowWidth - myship.Width * 4) && keyboardState.IsKeyDown(Keys.A) == true) || (playerPos.X == 0 && keyboardState.IsKeyDown(Keys.D) == true))
         {
             playerSpeed.X = 4f;
         }

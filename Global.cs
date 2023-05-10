@@ -16,7 +16,7 @@ public static class GlobalConst
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool recTouch;
-    static Rectangle recMyship;
+    static Rectangle recPlayer;
     static Texture2D myShip;
 
     public static Texture2D MyShip
@@ -24,10 +24,10 @@ public static class GlobalConst
         get { return myShip; }
         set { myShip = value; }
     }
-    public static Rectangle RecMyship
+    public static Rectangle RecPlayer
     {
-        get { return recMyship; }
-        set { recMyship = value; }
+        get { return recPlayer; }
+        set { recPlayer = value; }
     }
     public static string[] Split
     {
