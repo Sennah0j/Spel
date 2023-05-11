@@ -11,7 +11,7 @@ using System.Threading;
 public static class GlobalConst
 {
     static string[] splitBlockStr;
-    static int windowWidth, windowHeight;
+    static int windowWidth, windowHeight, sceneStatus;
     static string blockFile = "File";
     static Vector2 playerPos;
     static float timeJump, gravity;
@@ -19,6 +19,11 @@ public static class GlobalConst
     static Rectangle recPlayer;
     static Texture2D myShip;
 
+    public static int SeneStatus
+    {
+        get { return sceneStatus; }
+        set { sceneStatus = value; }
+    }
     public static Texture2D MyShip
     {
         get { return myShip; }

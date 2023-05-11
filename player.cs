@@ -19,6 +19,7 @@ public class Player
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
+    
     //public TimeSpan ElapsedGameTime { get; set; }
 
     public float PlayerX()
@@ -46,9 +47,9 @@ public class Player
         timeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (keyboardState.IsKeyDown(Keys.W) && (touch == true))
         {
-
-            playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.99));
-            mathPow = Math.Pow(mathPow, 0.99);
+            mathPow = Math.Pow(mathPow, 0.99999999);
+            playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.999999999999));
+            
         }
 
         if (keyboardState.IsKeyUp(Keys.W))
@@ -57,10 +58,11 @@ public class Player
             mathPow = 10;
             touch = false;
         }
-        else if (timeJump >= 5)
+        else if (timeJump >= 2)
         {
             touch = false;
         }
+        
         playerPos.Y = (gravity * timeJump * gravitySpeed) + playerPos.Y;
 
         GlobalConst.PlayerPos = playerPos;
@@ -68,14 +70,14 @@ public class Player
     }
 
     
-    public void KeyMovements()
+    public void KeyMovements(GameTime gameTime)
     {
-        
+       
         KeyboardState keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.D))
-            playerPos.X = playerPos.X + playerSpeed.X;
+            playerPos.X = (playerPos.X + playerSpeed.X);
         if (keyboardState.IsKeyDown(Keys.A))
-            playerPos.X = playerPos.X - playerSpeed.X;
+            playerPos.X = (playerPos.X - playerSpeed.X);
 
         //if (keyboardState.IsKeyDown(Keys.S))
         //myship_pos.Y = myship_pos.Y + myship_speed.Y;

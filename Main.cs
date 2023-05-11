@@ -18,7 +18,7 @@ namespace Pong
         string blockRead, place;
         bool F3TF = true, F3Click = false;
 
-
+        int sceneChanger = 0;
         static int points = 0, countNum = 0;
         bool wPress = false;
                 
@@ -44,6 +44,7 @@ namespace Pong
         Plattforms plattformsClass = new Plattforms();
         Bullet bulletClass = new Bullet();
         Enemy EnemyClass = new Enemy();
+        SceneChange sceneChangeClass = new SceneChange();
 
         SpriteFont gameFont;
 
@@ -158,11 +159,11 @@ namespace Pong
             
             PlattformSpawn();
             player.Gravity(gameTime);
-            player.KeyMovements();
+            player.KeyMovements(gameTime);
 
             BulletUpdate(gameTime);
 
-
+            sceneChangeClass.ArrowSceneChange();
 
             EnemyClass.BoundaryCheckEn();
             EnemyClass.EnemySPeed();
@@ -247,35 +248,70 @@ namespace Pong
 
             if (F3TF == true)
             {
-                spriteBatch.DrawString(gameFont, player.testStr + player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
+                spriteBatch.DrawString(gameFont, player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
                 spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X." + mouse.X + " " + plattformsClass.recTouch, new Vector2(10, 30), Color.White);
                 spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
                 spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
+                spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + sceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
 
             }
           
            
         }
 
-        
+        public void StartScene()
+        {
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
+        }
+
+        public void NextScene()
+        {
+            GraphicsDevice.Clear(backColor);
+
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform1(), backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform3(), backColor);
+            spriteBatch.Draw(platform, plattformsClass.Platform1(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
+
+            foreach (Vector2 cn in EnemyClass.tripod_pos_list)
+            {
+                spriteBatch.Draw(EnemyClass.tripod, cn, Color.White);
+            }
+
+            //Scale up not good
+            spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
+            //spriteBatch.Draw(player.myship, player.playerPos, Color.White);
+
+            foreach (Vector2 bullets in bulletClass.bulletsList)
+            {
+                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
+
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             
-            GraphicsDevice.Clear(backColor);
+            
             
             // TODO: Add your drawing code here
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            
+            F3Info();
             
 
-            spriteBatch.Draw(touchPlat, plattformsClass.Platform1() ,backColor);
-            spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
-            spriteBatch.Draw(touchPlat, plattformsClass.Platform3(), backColor);
-            spriteBatch.Draw(platform, plattformsClass.Platform4(), Color.Black);
-            spriteBatch.Draw(platform, plattformsClass.Platform5(), Color.Black);
-            spriteBatch.Draw(platform, plattformsClass.Platform6(), Color.Black);
+           if (sceneChanger == 0)
+            {
+                StartScene();
+            }
+           else if ( sceneChanger == 1)
+            {
+                NextScene();
+            }
 
             /*
             foreach (Vector2 cn in coin_pos_list)
@@ -284,25 +320,16 @@ namespace Pong
             }
             */
 
-            foreach (Vector2 cn in EnemyClass.tripod_pos_list)
-            {
-                spriteBatch.Draw(EnemyClass.tripod, cn, Color.White);
-            }
+            
 
 
-            F3Info();
+            
            
-            //Scale up not good
-            spriteBatch.Draw(player.myship ,GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
-            //spriteBatch.Draw(player.myship, player.playerPos, Color.White);
+            
 
 
 
-            foreach (Vector2 bullets in bulletClass.bulletsList)
-            {
-                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
-
-            }
+            
             spriteBatch.End();
             
 
