@@ -18,7 +18,7 @@ public class StartButton
 
 	public void MouseRec(MouseState mouse)
 	{
-        GlobalConst.MouseRec = new Rectangle(mouse.X, mouse.Y, 5, 5);
+        GlobalConst.MouseRec = new Rectangle(mouse.X, mouse.Y, 10, 10);
 
     }
 	public void InteractBtn(MouseState mouse)
@@ -27,5 +27,13 @@ public class StartButton
 		{
 			GlobalConst.SeneStatus = 1;
 		}
+		if(GlobalConst.MouseRec.Intersects(StartBtn()))
+		{
+			GlobalConst.StartButtonColor = Color.White;
+		}
+		else
+		{
+            GlobalConst.StartButtonColor = Color.Gray;
+        }
 	}
 }

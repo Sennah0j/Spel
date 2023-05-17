@@ -12,14 +12,14 @@ public class Player
     public Vector2 playerSpeed, myshipSpeedDown;
     public Rectangle recMyShip;
     public Vector2 playerPos;
-    public Texture2D myship;
+    public Texture2D myship, playerShoot;
     public double mathPow = 1;
     string blockRead, place;
     public string testStr, blockFile = "File";
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
-    
+   
     //public TimeSpan ElapsedGameTime { get; set; }
 
     public float PlayerX()

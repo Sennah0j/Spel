@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public class Enemy
 {
     int points;
-    public List<Vector2> tripod_pos_list = new List<Vector2>();
+    
     public List<Vector2> tripodSpeedList = new List<Vector2>();
     public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
     public Texture2D tripod;
@@ -25,7 +25,7 @@ public class Enemy
             tripod_pos.X = slump.Next(0, GlobalConst.WindowWidth - 50);
             tripod_pos.Y = slump.Next(0, GlobalConst.WindowHeight - 100);
 
-            tripod_pos_list.Add(tripod_pos);
+            GlobalConst.TripodPosList.Add(tripod_pos);
 
             tripod_speed.X = slump.Next(-5, 5);
             tripod_speed.Y = slump.Next(-5, 5);
@@ -36,9 +36,9 @@ public class Enemy
     }
     public void EnemySPeed()
     {
-        for (int i = 0; i < tripod_pos_list.Count; i++)
+        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            tripod_pos_list[i] = tripod_pos_list[i] + tripodSpeedList[i];
+            GlobalConst.TripodPosList[i] = GlobalConst.TripodPosList[i] + tripodSpeedList[i];
         }
     }
     public void EnemyRndLocation(int j)
@@ -48,7 +48,7 @@ public class Enemy
         tripod_pos2.X = slump.Next(0, GlobalConst.WindowWidth - 50);
         tripod_pos2.Y = slump.Next(0, GlobalConst.WindowHeight - 400);
 
-        tripod_pos_list[j] = tripod_pos2;
+        GlobalConst.TripodPosList[j] = tripod_pos2;
 
        
 
@@ -56,16 +56,16 @@ public class Enemy
 
     public void BoundaryCheckEn()
     {
-        for (int i = 0; i < tripod_pos_list.Count; i++)
+        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (tripod_pos_list[i].Y >= (GlobalConst.WindowHeight - tripod.Height) || tripod_pos_list[i].Y <= 0 + tripod.Height)
+            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight - tripod.Height) || GlobalConst.TripodPosList[i].Y <= 0 + tripod.Height)
             {
                 tripodSpeedList[i] = -tripodSpeedList[i];
             }
         }
-        for (int i = 0; i < tripod_pos_list.Count; i++)
+        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (tripod_pos_list[i].X >= (GlobalConst.WindowWidth - tripod.Width) || tripod_pos_list[i].X <= 0 + tripod.Width)
+            if (GlobalConst.TripodPosList[i].X >= (GlobalConst.WindowWidth - tripod.Width) || GlobalConst.TripodPosList[i].X <= 0 + tripod.Width)
             {
                 tripodSpeedList[i] = -tripodSpeedList[i];
             }
@@ -75,9 +75,9 @@ public class Enemy
     {
         
         
-        for (int i = 0; i < tripod_pos_list.Count; i++)
+        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (tripod_pos_list[i].Y >= (GlobalConst.WindowHeight + tripod.Height))
+            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight + tripod.Height))
             {
                 points += 10;
             }

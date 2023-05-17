@@ -18,8 +18,19 @@ public static class GlobalConst
     static bool recTouch;
     static Rectangle recPlayer, startButton, mouseRec;
     static Texture2D myShip;
+    static Color startButtonColor ;
+    static List<Vector2> tripod_pos_list = new List<Vector2>();
+    public static List<Vector2> TripodPosList
+    {
+        get { return tripod_pos_list; }
+        set { tripod_pos_list = value; }
+    }
 
-    
+    public static Color StartButtonColor
+    {
+        get { return startButtonColor; }
+        set { startButtonColor = value; }
+    }
     public static Rectangle MouseRec
     {
         get { return mouseRec; }

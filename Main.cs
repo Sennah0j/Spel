@@ -36,7 +36,7 @@ namespace Pong
         List<Vector2> coin_pos_list = new List<Vector2>();
         
         public Rectangle rec_myship;
-        Rectangle rec_coin;
+        Rectangle enemyRec, bulletRec;
        
         MouseState mouse;
 
@@ -58,7 +58,7 @@ namespace Pong
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = false;
+            IsMouseVisible = true;
             
             
         }
@@ -123,6 +123,7 @@ namespace Pong
             // TODO: use this.Content to load your game content here
             coin = Content.Load<Texture2D>("Sprites/coin");
             player.myship = Content.Load<Texture2D>("Sprites/slime");
+            player.playerShoot = Content.Load<Texture2D>("Sprites/SlimeShooting");
             EnemyClass.tripod = Content.Load < Texture2D>("Sprites/tripod");
             bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
 
@@ -189,17 +190,23 @@ namespace Pong
          
         public void CheckCollisionEn()
         {
-            foreach (Vector2 cn in coin_pos_list.ToList())
+            foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
             {
                 GlobalConst.RecPlayer = new Rectangle(player.playerPos.ToPoint(), new Point(player.myship.Width * SCALE, player.myship.Height * SCALE));
-                rec_coin = new Rectangle(Convert.ToInt32(cn.X), Convert.ToInt32(cn.Y), coin.Width, coin.Height);
+                enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), coin.Width, coin.Height);
 
-                if (GlobalConst.RecPlayer.Intersects(rec_coin))
+                for(int i = 0; i < bulletClass.bulletsList.Count; i++)
                 {
-                    points += 10;
-                    coin_pos_list.Remove(cn);
+                    bulletRec = new Rectangle((int)bulletClass.bulletsList[i].X, (int)bulletClass.bulletsList[i].Y , bulletClass.bulletTexture.Width * 2, bulletClass.bulletTexture.Height * 2);
+                    if (bulletRec.Intersects(enemyRec))
+                    {
 
+                        GlobalConst.TripodPosList.Remove(enemy);
+                        EnemyClass.tripodSpeedList.Remove(enemy);
+
+                    }
                 }
+                
             }
            
 
@@ -262,7 +269,8 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
-                
+                spriteBatch.DrawString(gameFont, "Enemy left:  " + GlobalConst.TripodPosList.Count, new Vector2(10, 150), Color.White);
+
 
             }
           
@@ -274,7 +282,7 @@ namespace Pong
 
             GraphicsDevice.Clear(Color.Black);
             //spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
-            spriteBatch.Draw(startbtn, StartButtonClass.StartBtn(), Color.White);
+            spriteBatch.Draw(startbtn, StartButtonClass.StartBtn(), GlobalConst.StartButtonColor);
             spriteBatch.DrawString(gameFont, "Play", new Vector2(935, 475), Color.Black);
 
 
@@ -291,18 +299,27 @@ namespace Pong
             spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
             spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
 
-            foreach (Vector2 cn in EnemyClass.tripod_pos_list)
+            foreach (Vector2 cn in GlobalConst.TripodPosList)
             {
                 spriteBatch.Draw(EnemyClass.tripod, cn, Color.White);
             }
 
+            if(bulletClass.pressed == true)
+            {
+                spriteBatch.Draw(player.playerShoot, GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
+            }
             //Scale up not good
-            spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, SCALE, SpriteEffects.None, 0);
+           
             //spriteBatch.Draw(player.myship, player.playerPos, Color.White);
 
             foreach (Vector2 bullets in bulletClass.bulletsList)
             {
-                spriteBatch.Draw(bulletClass.bulletTexture, bullets, Color.White);
+                spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+                
 
             }
         }
@@ -343,7 +360,7 @@ namespace Pong
 
 
 
-            spriteBatch.Draw(startbtn, GlobalConst.MouseRec, Color.OrangeRed);
+           // spriteBatch.Draw(startbtn, GlobalConst.MouseRec, Color.OrangeRed);
 
             F3Info();
             spriteBatch.End();

@@ -19,7 +19,7 @@ public class Bullet
 	Rectangle bulletRec;
     Vector2 tempBull;
 	Vector2 tempBullSpeed;
-    public bool pressed = false;
+    public  bool pressed = false;
     double timeSinceLastBullet = 0;
     public void Vector2Def()
 	{
