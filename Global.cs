@@ -16,9 +16,15 @@ public static class GlobalConst
     static Vector2 playerPos;
     static float timeJump, gravity;
     static bool recTouch;
-    static Rectangle recPlayer, startButton;
+    static Rectangle recPlayer, startButton, mouseRec;
     static Texture2D myShip;
 
+    
+    public static Rectangle MouseRec
+    {
+        get { return mouseRec; }
+        set { mouseRec = value; }
+    }
     public static Rectangle StartButton
     {
         get { return startButton; }

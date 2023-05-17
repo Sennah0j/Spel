@@ -48,7 +48,7 @@ namespace Pong
         StartButton StartButtonClass = new StartButton();    
         SpriteFont gameFont;
 
-
+        
 
         
         
@@ -58,7 +58,7 @@ namespace Pong
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             
             
         }
@@ -161,7 +161,7 @@ namespace Pong
             KeyboardState keyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+           
             PlattformSpawn();
             player.Gravity(gameTime);
             player.KeyMovements(gameTime);
@@ -174,8 +174,9 @@ namespace Pong
             EnemyClass.EnemySPeed();
             CheckCollisionEn();
             EnemyClass.CheckCollisionEn();
+            StartButtonClass.MouseRec(mouse);
+            StartButtonClass.InteractBtn(mouse);
             
-
 
             Cursor();
 
@@ -261,6 +262,7 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
+                
 
             }
           
@@ -273,6 +275,8 @@ namespace Pong
             GraphicsDevice.Clear(Color.Black);
             //spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
             spriteBatch.Draw(startbtn, StartButtonClass.StartBtn(), Color.White);
+            spriteBatch.DrawString(gameFont, "Play", new Vector2(935, 475), Color.Black);
+
 
         }
 
@@ -310,11 +314,11 @@ namespace Pong
             
             // TODO: Add your drawing code here
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-
             
 
-           if (GlobalConst.SeneStatus == 0)
+
+
+            if (GlobalConst.SeneStatus == 0)
             {
                 StartScene();
                 sceneName = "start";
@@ -339,7 +343,7 @@ namespace Pong
 
 
 
-
+            spriteBatch.Draw(startbtn, GlobalConst.MouseRec, Color.OrangeRed);
 
             F3Info();
             spriteBatch.End();

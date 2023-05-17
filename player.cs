@@ -109,7 +109,7 @@ public class Player
             gravitySpeed = 0f;
             gravity = 0f;
             timeJump = 0f;
-            points = 69;
+            
 
             touch = true;
         }
