@@ -17,14 +17,14 @@ namespace Pong
 
         string blockRead, place;
         bool F3TF = true, F3Click = false;
-
+        string sceneName;
         int sceneChanger = 0;
         static int points = 0, countNum = 0;
         bool wPress = false;
                 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        Texture2D platform, touchPlat;
+        Texture2D platform, touchPlat, startbtn;
         
         
         Texture2D coin;
@@ -44,8 +44,8 @@ namespace Pong
         Plattforms plattformsClass = new Plattforms();
         Bullet bulletClass = new Bullet();
         Enemy EnemyClass = new Enemy();
-        SceneChange sceneChangeClass = new SceneChange();
-
+        SceneChange SceneChangeClass = new SceneChange();
+        StartButton StartButtonClass = new StartButton();    
         SpriteFont gameFont;
 
 
@@ -84,9 +84,11 @@ namespace Pong
                 coin_pos_list.Add(coin_pos);
             }
 
-            
-            
            
+          
+
+
+
 
 
             // TODO: Add your initialization logic here
@@ -127,7 +129,10 @@ namespace Pong
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
             touchPlat = new Texture2D(GraphicsDevice, 1, 1);
-            
+
+            startbtn = new Texture2D(GraphicsDevice, 1, 1);
+            startbtn.SetData(new Color[] { Color.White });
+
 
 
         }
@@ -163,13 +168,14 @@ namespace Pong
 
             BulletUpdate(gameTime);
 
-            sceneChangeClass.ArrowSceneChange();
+            SceneChangeClass.ArrowSceneChange();
 
             EnemyClass.BoundaryCheckEn();
             EnemyClass.EnemySPeed();
             CheckCollisionEn();
             EnemyClass.CheckCollisionEn();
             
+
 
             Cursor();
 
@@ -253,7 +259,8 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
                 spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
-                spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + sceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
+                spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
+                spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
 
             }
           
@@ -262,8 +269,11 @@ namespace Pong
 
         public void StartScene()
         {
+
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
+            //spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
+            spriteBatch.Draw(startbtn, StartButtonClass.StartBtn(), Color.White);
+
         }
 
         public void NextScene()
@@ -301,16 +311,18 @@ namespace Pong
             // TODO: Add your drawing code here
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            F3Info();
+
             
 
-           if (sceneChanger == 0)
+           if (GlobalConst.SeneStatus == 0)
             {
                 StartScene();
+                sceneName = "start";
             }
-           else if ( sceneChanger == 1)
+           else if ( GlobalConst.SeneStatus == 1)
             {
                 NextScene();
+                sceneName = "first";
             }
 
             /*
@@ -320,16 +332,16 @@ namespace Pong
             }
             */
 
-            
-
-
-            
-           
-            
 
 
 
-            
+
+
+
+
+
+
+            F3Info();
             spriteBatch.End();
             
 

@@ -44,21 +44,30 @@ public class Enemy
     public void EnemyRndLocation(int j)
     {
         Random slump = new Random();
-        for (int i = 0; i < 5; i++)
-        {
-            tripod_pos2.X = slump.Next(0, GlobalConst.WindowWidth - 50);
-            tripod_pos2.Y = slump.Next(0, GlobalConst.WindowHeight - 400);
+        
+        tripod_pos2.X = slump.Next(0, GlobalConst.WindowWidth - 50);
+        tripod_pos2.Y = slump.Next(0, GlobalConst.WindowHeight - 400);
 
-            tripod_pos_list[j] = tripod_pos2;
-        }
+        tripod_pos_list[j] = tripod_pos2;
+
+       
+
     }
+
     public void BoundaryCheckEn()
     {
         for (int i = 0; i < tripod_pos_list.Count; i++)
         {
-            if (tripod_pos_list[i].Y >= (GlobalConst.WindowHeight + tripod.Height))
+            if (tripod_pos_list[i].Y >= (GlobalConst.WindowHeight - tripod.Height) || tripod_pos_list[i].Y <= 0 + tripod.Height)
             {
-                EnemyRndLocation(i);
+                tripodSpeedList[i] = -tripodSpeedList[i];
+            }
+        }
+        for (int i = 0; i < tripod_pos_list.Count; i++)
+        {
+            if (tripod_pos_list[i].X >= (GlobalConst.WindowWidth - tripod.Width) || tripod_pos_list[i].X <= 0 + tripod.Width)
+            {
+                tripodSpeedList[i] = -tripodSpeedList[i];
             }
         }
     }
