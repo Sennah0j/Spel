@@ -124,7 +124,7 @@ namespace Pong
             coin = Content.Load<Texture2D>("Sprites/coin");
             player.myship = Content.Load<Texture2D>("Sprites/slime");
             player.playerShoot = Content.Load<Texture2D>("Sprites/SlimeShooting");
-            EnemyClass.tripod = Content.Load < Texture2D>("Sprites/tripod");
+            GlobalConst.Enemy = Content.Load < Texture2D>("Sprites/tripod");
             bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
@@ -151,38 +151,13 @@ namespace Pong
 
         public void PlattformSpawn()
         {
+            plattformsClass.CheckColission();
             plattformsClass.Platform1();
             plattformsClass.Platform2();
             plattformsClass.Platform3();
-            if (plattformsClass.CheckColissionPlat1())
-            {
-                if(GlobalConst.SnapTouch == false)
-                {
-                    player.playerPos.Y = (GlobalConst.WindowHeight / 2) - player.myship.Height * 4;
-                    GlobalConst.SnapTouch = true;
-                }
-                    
-            }
-            if (plattformsClass.CheckColissionPlat2())
-            {
-                if (GlobalConst.SnapTouch == false)
-                {
-                    player.playerPos.Y = (GlobalConst.WindowHeight / 2) - player.myship.Height * 4;
-                    GlobalConst.SnapTouch = true;
-                }
-            }
+            
 
-            if (plattformsClass.CheckColissionPlat3())
-            {
-                if (GlobalConst.SnapTouch == false)
-                {
-                    player.playerPos.Y = ((GlobalConst.WindowHeight / 15) * 11) - player.myship.Height * 4;
-                    GlobalConst.SnapTouch = true;
-                }
-                
-            }
         }
-        
         
 
         protected override void Update(GameTime gameTime) 
@@ -191,11 +166,12 @@ namespace Pong
             KeyboardState keyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-            PlattformSpawn();
 
-            player.Gravity(gameTime);
+
+            PlattformSpawn();
             player.KeyMovements(gameTime);
+            player.Gravity(gameTime);
+            
 
             BulletUpdate(gameTime);
 
@@ -206,13 +182,13 @@ namespace Pong
             CheckCollisionEn();
             EnemyClass.CheckCollisionEn();
             StartButtonClass.MouseRec(mouse);
-            
+            player.EnemyHit();
             
 
             Cursor();
             player.playerRecUpdate();
 
-
+            
 
             base.Update(gameTime);
         }
@@ -225,7 +201,7 @@ namespace Pong
             foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
             {
                 
-                enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), coin.Width, coin.Height);
+                enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
 
                 for(int i = 0; i < bulletClass.bulletsList.Count; i++)
                 {
@@ -234,7 +210,7 @@ namespace Pong
                     {
 
                         GlobalConst.TripodPosList.Remove(enemy);
-                        EnemyClass.tripodSpeedList.Remove(enemy);
+                        GlobalConst.TripodSpeedList.Remove(enemy);
                         bulletClass.bulletsList.RemoveAt(i);
                         bulletClass.bulletSpeedList.RemoveAt(i);
 
@@ -298,13 +274,14 @@ namespace Pong
             {
                 spriteBatch.DrawString(gameFont, player.touch.ToString() + player.timeJump.ToString() + player.gravity.ToString() + player.mathPow, new Vector2(10, 10), Color.White);
                 spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X." + mouse.X + " " + plattformsClass.recTouch, new Vector2(10, 30), Color.White);
-                spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y + "Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 50), Color.White);
+                spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
                 spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
                 spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 150), Color.White);
-                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch, new Vector2(10, 170), Color.White);
+                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 170), Color.White);
+                spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,190), Color.White);
 
 
             }
@@ -349,7 +326,7 @@ namespace Pong
 
                 foreach (Vector2 cn in GlobalConst.TripodPosList)
                 {
-                    spriteBatch.Draw(EnemyClass.tripod, cn, Color.White);
+                    spriteBatch.Draw(GlobalConst.Enemy, cn, Color.White);
                 }
 
                 if (bulletClass.pressed == true)
@@ -425,7 +402,7 @@ namespace Pong
 
 
 
-           // spriteBatch.Draw(startbtn, GlobalConst.MouseRec, Color.OrangeRed);
+           //spriteBatch.Draw(startbtn, GlobalConst.MouseRec, Color.OrangeRed);
 
             F3Info();
             spriteBatch.End();

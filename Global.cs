@@ -12,16 +12,53 @@ public static class GlobalConst
 {
     static int scale = 4; //1 = default, 2 = twice the size
     static string[] splitBlockStr;
-    static int windowWidth, windowHeight, sceneStatus;
-    static string blockFile = "File";
+    static int windowWidth, windowHeight, sceneStatus, health = 100;
+    static string blockFile = "File", whichPlat;
     static Vector2 playerPos;
     static float timeJump, gravity;
-    static bool recTouch, spawnEnemyBool, snapTouch = false;
-    static Rectangle recPlayer, startButton, mouseRec;
-    static Texture2D myShip;
+    static bool recTouch, spawnEnemyBool, snapTouch = false, snapTouch2 = false;
+    static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3;
+    static Texture2D myShip, enemy;
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
+    static List<Vector2> tripodSpeedList = new List<Vector2>();
 
+    public static int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+    public static List<Vector2> TripodSpeedList
+    {
+        get { return tripodSpeedList; }
+        set { tripodSpeedList = value; }
+    }
+
+    public static bool SnapTouch2
+    {
+        get { return snapTouch2; }
+        set { snapTouch2 = value; }
+    }
+    public static string WhichPlat
+    {
+        get { return whichPlat; }
+        set { whichPlat = value; }
+    }
+    public static Rectangle Plat3
+    {
+        get { return plat3; }
+        set { plat3 = value; }
+    }
+    public static Rectangle Plat2
+    {
+        get { return plat2; }
+        set { plat2 = value; }
+    }
+    public static Rectangle Plat1
+    {
+        get { return plat1; }
+        set { plat1 = value; }
+    }
     public static bool SnapTouch
     {
         get { return snapTouch; }
@@ -63,6 +100,11 @@ public static class GlobalConst
     {
         get { return sceneStatus; }
         set { sceneStatus = value; }
+    }
+    public static Texture2D Enemy
+    {
+        get { return enemy; }
+        set { enemy = value; }
     }
     public static Texture2D MyShip
     {

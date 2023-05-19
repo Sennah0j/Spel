@@ -23,7 +23,8 @@ public class Player
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
-   
+    Rectangle enemyRec;
+    Plattforms plattformsClass = new Plattforms();
     //public TimeSpan ElapsedGameTime { get; set; }
 
     public float PlayerX()
@@ -34,7 +35,17 @@ public class Player
     {
         return (playerPos.Y);
     }
-
+    public void EnemyHit()
+    {
+        foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
+        {
+            enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
+            if (enemyRec.Intersects(GlobalConst.RecPlayer))
+            {
+                GlobalConst.Health -= 20;
+            }
+        }
+    }
     public void playerRecUpdate()
     {
         GlobalConst.RecPlayer = new Rectangle(playerPos.ToPoint(), new Point(myship.Width * GlobalConst.SCALE, myship.Height * GlobalConst.SCALE));
@@ -80,8 +91,8 @@ public class Player
     
     public void KeyMovements(GameTime gameTime)
     {
-       
-        KeyboardState keyboardState = Keyboard.GetState();
+       playerPos = GlobalConst.PlayerPos;
+       KeyboardState keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.D))
             playerPos.X = (playerPos.X + playerSpeed.X);
         if (keyboardState.IsKeyDown(Keys.A))
@@ -108,14 +119,13 @@ public class Player
             gravity = 0.89f;
         }
 
+
+
+
+
         if ((playerPos.Y >= GlobalConst.WindowHeight - myship.Height * 4))
         {
-            countNum = 0;
-            playerSpeed.Y = 0f;
-            myshipSpeedDown.Y = 0f;
-            gravitySpeed = 0f;
-            gravity = 0f;
-            timeJump = 0f;
+            
 
 
             if (GlobalConst.SnapTouch == false)
@@ -126,10 +136,9 @@ public class Player
                 GlobalConst.SnapTouch = true;
             }
 
-
-            touch = true;
+            GlobalConst.RecTouch = true;
+           
         }
-
         if (GlobalConst.RecTouch)
         {
             countNum = 0;
@@ -138,24 +147,25 @@ public class Player
             gravitySpeed = 0f;
             gravity = 0f;
             timeJump = 0f;
-        }
-        
-        
-        
-        else if(GlobalConst.SnapTouch == true)
-        {
-            playerSpeed.Y = 4f;
-            GlobalConst.SnapTouch = false;
+            touch = true;
         }
 
         //                                                                 SCALE
         else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height * 4) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true) )
         {
+            
             playerSpeed.Y = 4f;
-            GlobalConst.SnapTouch = false;
+           
         }
+        
+        else if (plattformsClass.CheckColission())
+        {
+
+        }
+
         else
         {
+            GlobalConst.SnapTouch = false;
             points = 420;
             gravitySpeed = 7f;
             gravity = 0.89f;

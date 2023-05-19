@@ -13,7 +13,7 @@ public class Enemy
 {
     int points;
     
-    public List<Vector2> tripodSpeedList = new List<Vector2>();
+    
     public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
     public Texture2D tripod;
 
@@ -29,7 +29,7 @@ public class Enemy
 
             tripod_speed.X = slump.Next(-5, 5);
             tripod_speed.Y = slump.Next(-5, 5);
-            tripodSpeedList.Add(tripod_speed);
+            GlobalConst.TripodSpeedList.Add(tripod_speed);
         }
 
 
@@ -38,7 +38,7 @@ public class Enemy
     {
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            GlobalConst.TripodPosList[i] = GlobalConst.TripodPosList[i] + tripodSpeedList[i];
+            GlobalConst.TripodPosList[i] = GlobalConst.TripodPosList[i] + GlobalConst.TripodSpeedList[i];
         }
     }
     public void EnemyRndLocation(int j)
@@ -49,7 +49,7 @@ public class Enemy
         tripod_pos2.Y = slump.Next(0, GlobalConst.WindowHeight - 400);
 
         GlobalConst.TripodPosList[j] = tripod_pos2;
-
+        
        
 
     }
@@ -58,16 +58,16 @@ public class Enemy
     {
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight - tripod.Height) || GlobalConst.TripodPosList[i].Y <= 0 + tripod.Height)
+            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight - GlobalConst.Enemy.Height) || GlobalConst.TripodPosList[i].Y <= 0 + GlobalConst.Enemy.Height)
             {
-                tripodSpeedList[i] = -tripodSpeedList[i];
+                GlobalConst.TripodSpeedList[i] = -GlobalConst.TripodSpeedList[i];
             }
         }
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (GlobalConst.TripodPosList[i].X >= (GlobalConst.WindowWidth - tripod.Width) || GlobalConst.TripodPosList[i].X <= 0 + tripod.Width)
+            if (GlobalConst.TripodPosList[i].X >= (GlobalConst.WindowWidth - GlobalConst.Enemy.Width) || GlobalConst.TripodPosList[i].X <= 0 + GlobalConst.Enemy.Width)
             {
-                tripodSpeedList[i] = -tripodSpeedList[i];
+                GlobalConst.TripodSpeedList[i] = -GlobalConst.TripodSpeedList[i];
             }
         }
     }
@@ -77,7 +77,7 @@ public class Enemy
         
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight + tripod.Height))
+            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight + GlobalConst.Enemy.Height))
             {
                 points += 10;
             }
