@@ -5,15 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 
 public class StartButton
 {
     MouseState mouseState = Mouse.GetState();
-	Rectangle mouseRec;
+	public Rectangle mouseRec, startBtn;
+	Enemy EnemyClass = new Enemy();
+	Player player = new Player();
     public Rectangle StartBtn()
 	{
-		return  new Rectangle(875, 450, 150, 70);
+		return startBtn = new Rectangle((GlobalConst.WindowWidth / 2) - 75, (GlobalConst.WindowHeight / 2) - 35, 150, 70);
 	}
 
 	public void MouseRec(MouseState mouse)
@@ -25,8 +28,14 @@ public class StartButton
 	{
 		if (GlobalConst.MouseRec.Intersects(StartBtn()) && mouse.LeftButton == ButtonState.Pressed)
 		{
-			GlobalConst.SeneStatus = 1;
-		}
+			if (GlobalConst.SeneStatus == 0)
+				GlobalConst.SeneStatus = 1;
+            
+			else if (GlobalConst.SeneStatus == 1)
+				GlobalConst.SeneStatus = 2;
+
+            GlobalConst.SpawnEnemyBool = true;
+        }
 		if(GlobalConst.MouseRec.Intersects(StartBtn()))
 		{
 			GlobalConst.StartButtonColor = Color.White;

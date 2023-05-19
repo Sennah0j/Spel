@@ -10,16 +10,34 @@ using System.Linq;
 using System.Threading;
 public static class GlobalConst
 {
+    static int scale = 4; //1 = default, 2 = twice the size
     static string[] splitBlockStr;
     static int windowWidth, windowHeight, sceneStatus;
     static string blockFile = "File";
     static Vector2 playerPos;
     static float timeJump, gravity;
-    static bool recTouch;
+    static bool recTouch, spawnEnemyBool, snapTouch = false;
     static Rectangle recPlayer, startButton, mouseRec;
     static Texture2D myShip;
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
+
+    public static bool SnapTouch
+    {
+        get { return snapTouch; }
+        set { snapTouch = value; }
+    }
+    public static bool SpawnEnemyBool
+    {
+        get { return spawnEnemyBool; }
+        set { spawnEnemyBool = value; }
+    }
+    public static int SCALE
+    {
+        get { return scale; }
+        set { scale = value; }
+    }
+
     public static List<Vector2> TripodPosList
     {
         get { return tripod_pos_list; }

@@ -15,7 +15,7 @@ public class Bullet
 	Vector2 bulletPos;
 	Vector2 bulletSpeed;
 	public List<Vector2> bulletsList = new List<Vector2>();
-	List<Vector2> bulletSpeedList = new List<Vector2>();
+	public List<Vector2> bulletSpeedList = new List<Vector2>();
 	Rectangle bulletRec;
     Vector2 tempBull;
 	Vector2 tempBullSpeed;

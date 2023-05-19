@@ -17,10 +17,10 @@ public class Enemy
     public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
     public Texture2D tripod;
 
-    public void SpawnEnemy()
+    public void SpawnEnemy(int j)
     {
         Random slump = new Random();
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < j; i++)
         {
             tripod_pos.X = slump.Next(0, GlobalConst.WindowWidth - 50);
             tripod_pos.Y = slump.Next(0, GlobalConst.WindowHeight - 100);
