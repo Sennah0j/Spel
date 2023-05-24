@@ -38,7 +38,7 @@ public class Bullet
 
         double totalSpeed = 10, angle;
 
-        if ((mouse.LeftButton == ButtonState.Pressed) && (pressed == false))
+        if ((mouse.LeftButton == ButtonState.Pressed) && (pressed == false) && (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet+ 500))
 		{
 
             
@@ -62,7 +62,7 @@ public class Bullet
             bulletsList.Add(bulletPos);
             bulletSpeedList.Add(bulletSpeed);
 
-            //timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+            timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
             pressed = true;
         }
 

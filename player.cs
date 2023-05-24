@@ -23,7 +23,7 @@ public class Player
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
-    Rectangle enemyRec;
+    
     Plattforms plattformsClass = new Plattforms();
     //public TimeSpan ElapsedGameTime { get; set; }
 
@@ -35,17 +35,7 @@ public class Player
     {
         return (playerPos.Y);
     }
-    public void EnemyHit()
-    {
-        foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
-        {
-            enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
-            if (enemyRec.Intersects(GlobalConst.RecPlayer))
-            {
-                GlobalConst.Health -= 20;
-            }
-        }
-    }
+    
     public void playerRecUpdate()
     {
         GlobalConst.RecPlayer = new Rectangle(playerPos.ToPoint(), new Point(myship.Width * GlobalConst.SCALE, myship.Height * GlobalConst.SCALE));

@@ -24,7 +24,7 @@ namespace Pong
                 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        Texture2D platform, touchPlat, startbtn, playerTexture;
+        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex;
         
         
         Texture2D coin;
@@ -47,7 +47,7 @@ namespace Pong
         SceneChange SceneChangeClass = new SceneChange();
         StartButton StartButtonClass = new StartButton();    
         SpriteFont gameFont;
-
+        Health healthClass = new Health();
         
 
         
@@ -137,6 +137,9 @@ namespace Pong
             playerTexture = new Texture2D(GraphicsDevice, 1, 1);
             playerTexture.SetData(new Color[] { Color.Red });
 
+            healthBarTex = new Texture2D(GraphicsDevice, 1, 1);
+            healthBarTex.SetData(new Color[] { Color.Red });
+
 
 
         }
@@ -182,8 +185,8 @@ namespace Pong
             CheckCollisionEn();
             EnemyClass.CheckCollisionEn();
             StartButtonClass.MouseRec(mouse);
-            player.EnemyHit();
-            
+            healthClass.EnemyHit(gameTime);
+            healthClass.HealthBar();
 
             Cursor();
             player.playerRecUpdate();
@@ -282,6 +285,7 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 150), Color.White);
                 spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 170), Color.White);
                 spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,190), Color.White);
+                spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 210), Color.White);
 
 
             }
@@ -323,6 +327,8 @@ namespace Pong
                 spriteBatch.Draw(platform, plattformsClass.Platform1(), Color.Black);
                 spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
                 spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
+
+                spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
 
                 foreach (Vector2 cn in GlobalConst.TripodPosList)
                 {

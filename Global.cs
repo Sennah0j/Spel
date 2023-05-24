@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 public static class GlobalConst
 {
+    static double hitTimer;
     static int scale = 4; //1 = default, 2 = twice the size
     static string[] splitBlockStr;
     static int windowWidth, windowHeight, sceneStatus, health = 100;
@@ -23,6 +24,11 @@ public static class GlobalConst
     static List<Vector2> tripod_pos_list = new List<Vector2>();
     static List<Vector2> tripodSpeedList = new List<Vector2>();
 
+    public static double HitTimer
+    {
+        get { return hitTimer; }
+        set { hitTimer = value; }
+    }
     public static int Health
     {
         get { return health; }
