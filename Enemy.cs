@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Collections.Generic;
 
 
 public class Enemy
@@ -17,8 +16,17 @@ public class Enemy
     public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
     public Texture2D tripod;
 
+    public void DeleteEnemy()
+    {
+        foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
+        {
+            GlobalConst.TripodPosList.Remove(enemy);
+            GlobalConst.TripodSpeedList.Remove(enemy);
+        }
+    }
     public void SpawnEnemy(int j)
     {
+        
         Random slump = new Random();
         for (int i = 0; i < j; i++)
         {

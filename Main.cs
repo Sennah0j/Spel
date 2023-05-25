@@ -31,7 +31,8 @@ namespace Pong
         
         Color backColor = Color.BurlyWood;
         
-        Vector2 coin_pos;
+
+        Vector2 coin_pos, restartPos;
         Vector2 origin = new Vector2(GlobalConst.PlayerPos.X, GlobalConst.PlayerPos.Y);
         List<Vector2> coin_pos_list = new List<Vector2>();
         
@@ -48,7 +49,7 @@ namespace Pong
         StartButton StartButtonClass = new StartButton();    
         SpriteFont gameFont;
         Health healthClass = new Health();
-        
+        DeathBtn deathBtnClass = new DeathBtn();
 
         
         
@@ -73,7 +74,8 @@ namespace Pong
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
             graphics.IsFullScreen = true;
             graphics.ApplyChanges();
-
+            restartPos.Y = GlobalConst.WindowHeight - GlobalConst.MyShip.Height;
+            restartPos.X = 0;
 
 
             Random slump = new Random();
@@ -293,6 +295,15 @@ namespace Pong
            
         }
 
+        public void DeathScene()
+        {
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Draw(startbtn, deathBtnClass.Btn(), GlobalConst.StartButtonColor);
+            spriteBatch.DrawString(gameFont, "RIP", new Vector2(GlobalConst.WindowWidth / 2 + 10, GlobalConst.WindowHeight / 3), Color.White);
+            spriteBatch.DrawString(gameFont, "Play again", new Vector2((deathBtnClass.Btn().X + deathBtnClass.Btn().Width / 2) - 10, (deathBtnClass.Btn().Y + deathBtnClass.Btn().Height / 2) - 10), Color.Black);
+            deathBtnClass.Interact(mouse);
+        }
+
         public void StartScene()
         {
 
@@ -307,8 +318,12 @@ namespace Pong
         public void NextScene(int j)
         {
 
+
             if (GlobalConst.SpawnEnemyBool == true)
             {
+                //error
+                
+                GlobalConst.PlayerPos = restartPos;
                 EnemyClass.SpawnEnemy(j);
                 player.IntiPlayerCont();
                 GlobalConst.SpawnEnemyBool = false;
@@ -376,6 +391,11 @@ namespace Pong
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             
 
+            if(GlobalConst.Health == 0)
+            {
+                EnemyClass.DeleteEnemy();
+                GlobalConst.SeneStatus = -1;
+            }
 
 
             if (GlobalConst.SeneStatus == 0)
@@ -392,6 +412,11 @@ namespace Pong
             else if (GlobalConst.SeneStatus == 2)
             {
                 NextScene(10);
+            }
+            else if (GlobalConst.SeneStatus == -1)
+            {
+                GlobalConst.Health = 100;
+                DeathScene();
             }
 
             /*

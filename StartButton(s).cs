@@ -30,9 +30,11 @@ public class StartButton
 		{
 			if (GlobalConst.SeneStatus == 0)
 				GlobalConst.SeneStatus = 1;
-            
+
 			else if (GlobalConst.SeneStatus == 1)
 				GlobalConst.SeneStatus = 2;
+
+			
 
             GlobalConst.SpawnEnemyBool = true;
         }

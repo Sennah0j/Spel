@@ -19,9 +19,9 @@ public class Health
         foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
         {
             enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
-            if (enemyRec.Intersects(GlobalConst.RecPlayer) && (gameTime.TotalGameTime.TotalSeconds > hitTimmer + 4))
+            if (enemyRec.Intersects(GlobalConst.RecPlayer) && (gameTime.TotalGameTime.TotalSeconds > hitTimmer + 2))
             {
-                GlobalConst.Health -= 20;
+                GlobalConst.Health -= 50;
                 hitTimmer = gameTime.TotalGameTime.TotalSeconds;
                 
                 
@@ -40,6 +40,6 @@ public class Health
 
     public Rectangle HealthBar()
     {
-        return healthBar = new Rectangle((GlobalConst.WindowWidth / 20) * 18, (GlobalConst.WindowHeight / 5) * 2, 20, 20);
+        return healthBar = new Rectangle(10, GlobalConst.WindowHeight - (GlobalConst.Health * 2 + 10), 20, +GlobalConst.Health * 2);
     }
 }
