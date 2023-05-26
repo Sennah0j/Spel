@@ -24,7 +24,7 @@ namespace Pong
                 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex;
+        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex, deathBtn;
         
         
         Texture2D coin;
@@ -34,6 +34,7 @@ namespace Pong
 
         Vector2 coin_pos, restartPos;
         Vector2 origin = new Vector2(GlobalConst.PlayerPos.X, GlobalConst.PlayerPos.Y);
+        Vector2 bossOrigin = new Vector2(GlobalConst.BossVec.X, GlobalConst.BossVec.Y);
         List<Vector2> coin_pos_list = new List<Vector2>();
         
         public Rectangle rec_myship;
@@ -49,7 +50,8 @@ namespace Pong
         StartButton StartButtonClass = new StartButton();    
         SpriteFont gameFont;
         Health healthClass = new Health();
-        DeathBtn deathBtnClass = new DeathBtn();
+        DeathBtn DeathBtnClass = new DeathBtn();
+        Boss BossClass = new Boss();
 
         
         
@@ -74,8 +76,8 @@ namespace Pong
             graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
             graphics.IsFullScreen = true;
             graphics.ApplyChanges();
-            restartPos.Y = GlobalConst.WindowHeight - GlobalConst.MyShip.Height;
-            restartPos.X = 0;
+
+            
 
 
             Random slump = new Random();
@@ -86,28 +88,28 @@ namespace Pong
                 coin_pos_list.Add(coin_pos);
             }
 
-           
-          
 
 
 
 
+            
+            
 
             // TODO: Add your initialization logic here
-            
+
             bulletClass.Vector2Def();
             
 
             
             EnemyClass.tripod_speed.Y = 2f;
             EnemyClass.tripod_speed.X = 0f;
-            
-            
-            
-            
+
+            restartPos.X = 0f;
+            restartPos.Y = GlobalConst.WindowHeight - 12 * 4;
 
 
-            
+
+
 
             base.Initialize();
             
@@ -128,6 +130,8 @@ namespace Pong
             player.playerShoot = Content.Load<Texture2D>("Sprites/SlimeShooting");
             GlobalConst.Enemy = Content.Load < Texture2D>("Sprites/tripod");
             bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
+            GlobalConst.BossTex = Content.Load<Texture2D>("Sprites/Boss");
+            GlobalConst.BossShootTex = Content.Load<Texture2D>("Sprites/BossShoot");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
@@ -142,7 +146,8 @@ namespace Pong
             healthBarTex = new Texture2D(GraphicsDevice, 1, 1);
             healthBarTex.SetData(new Color[] { Color.Red });
 
-
+            deathBtn = new Texture2D(GraphicsDevice, 1, 1);
+            deathBtn.SetData(new Color[] { Color.White });
 
         }
 
@@ -164,6 +169,10 @@ namespace Pong
 
         }
         
+        public void BossMap()
+        {
+            BossClass.Initizlize();
+        }
 
         protected override void Update(GameTime gameTime) 
         {
@@ -189,6 +198,8 @@ namespace Pong
             StartButtonClass.MouseRec(mouse);
             healthClass.EnemyHit(gameTime);
             healthClass.HealthBar();
+
+            BossMap();
 
             Cursor();
             player.playerRecUpdate();
@@ -298,10 +309,10 @@ namespace Pong
         public void DeathScene()
         {
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Draw(startbtn, deathBtnClass.Btn(), GlobalConst.StartButtonColor);
+            spriteBatch.Draw(deathBtn, DeathBtnClass.Btn(), GlobalConst.StartButtonColor);
             spriteBatch.DrawString(gameFont, "RIP", new Vector2(GlobalConst.WindowWidth / 2 + 10, GlobalConst.WindowHeight / 3), Color.White);
-            spriteBatch.DrawString(gameFont, "Play again", new Vector2((deathBtnClass.Btn().X + deathBtnClass.Btn().Width / 2) - 10, (deathBtnClass.Btn().Y + deathBtnClass.Btn().Height / 2) - 10), Color.Black);
-            deathBtnClass.Interact(mouse);
+            spriteBatch.DrawString(gameFont, "Play again", new Vector2((DeathBtnClass.Btn().X -5 + DeathBtnClass.Btn().Width / 2) - 10, (DeathBtnClass.Btn().Y + DeathBtnClass.Btn().Height / 2) - 10), Color.Black);
+            DeathBtnClass.Interact(mouse);
         }
 
         public void StartScene()
@@ -343,7 +354,7 @@ namespace Pong
                 spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
                 spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
 
-                spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
+                
 
                 foreach (Vector2 cn in GlobalConst.TripodPosList)
                 {
@@ -358,9 +369,7 @@ namespace Pong
                 {
                     spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, GlobalConst.SCALE, SpriteEffects.None, 0);
                 }
-                //Scale up not good
-
-                //spriteBatch.Draw(player.myship, player.playerPos, Color.White);
+               
 
                 foreach (Vector2 bullets in bulletClass.bulletsList)
                 {
@@ -368,6 +377,7 @@ namespace Pong
 
 
                 }
+                spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
             }
             
         }
@@ -382,6 +392,42 @@ namespace Pong
             StartButtonClass.InteractBtn(mouse);
         }
 
+        public void BossLevel()
+        {
+            GraphicsDevice.Clear(backColor);
+
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform1(), backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform2(), backColor);
+            spriteBatch.Draw(touchPlat, plattformsClass.Platform3(), backColor);
+            spriteBatch.Draw(platform, plattformsClass.Platform1(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
+            spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
+
+            spriteBatch.Draw(GlobalConst.BossTex, BossClass.bossVec, null, Color.White, 0, bossOrigin, 6, SpriteEffects.None, 0);
+            foreach (Vector2 cn in GlobalConst.TripodPosList)
+            {
+                spriteBatch.Draw(GlobalConst.Enemy, cn, Color.White);
+            }
+
+            if (bulletClass.pressed == true)
+            {
+                spriteBatch.Draw(player.playerShoot, GlobalConst.PlayerPos, null, Color.White, 0, origin, GlobalConst.SCALE, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, GlobalConst.SCALE, SpriteEffects.None, 0);
+            }
+
+
+            foreach (Vector2 bullets in bulletClass.bulletsList)
+            {
+                spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+
+
+            }
+            spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             
@@ -393,8 +439,9 @@ namespace Pong
 
             if(GlobalConst.Health == 0)
             {
-                EnemyClass.DeleteEnemy();
                 GlobalConst.SeneStatus = -1;
+                EnemyClass.DeleteEnemy();
+                
             }
 
 
@@ -413,9 +460,13 @@ namespace Pong
             {
                 NextScene(10);
             }
+            else if( GlobalConst.SeneStatus == 3)
+            {
+                BossLevel();
+            }
             else if (GlobalConst.SeneStatus == -1)
             {
-                GlobalConst.Health = 100;
+                
                 DeathScene();
             }
 

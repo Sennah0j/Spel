@@ -26,18 +26,34 @@ public class StartButton
     }
 	public void InteractBtn(MouseState mouse)
 	{
-		if (GlobalConst.MouseRec.Intersects(StartBtn()) && mouse.LeftButton == ButtonState.Pressed)
+		if (GlobalConst.MouseRec.Intersects(StartBtn()) && mouse.LeftButton == ButtonState.Pressed && GlobalConst.DeathBtnPress == false)
 		{
 			if (GlobalConst.SeneStatus == 0)
-				GlobalConst.SeneStatus = 1;
+			{
+                GlobalConst.SeneStatus = 1;
+                GlobalConst.SpawnEnemyBool = true;
+            }
+				
 
-			else if (GlobalConst.SeneStatus == 1)
-				GlobalConst.SeneStatus = 2;
 
+			else if (GlobalConst.SeneStatus == 1)	
+			{
+                GlobalConst.SeneStatus = 2;
+                GlobalConst.SpawnEnemyBool = true;
+            }
+            
+
+            else if (GlobalConst.SeneStatus == 2)
+				GlobalConst.SeneStatus = 3;
 			
 
-            GlobalConst.SpawnEnemyBool = true;
+            
         }
+		else if(mouse.LeftButton == ButtonState.Released)
+		{
+			GlobalConst.DeathBtnPress = false;
+		}
+
 		if(GlobalConst.MouseRec.Intersects(StartBtn()))
 		{
 			GlobalConst.StartButtonColor = Color.White;

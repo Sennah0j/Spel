@@ -13,15 +13,44 @@ public static class GlobalConst
     static string[] splitBlockStr;
     static int windowWidth, windowHeight, sceneStatus, health = 100;
     static string blockFile = "File", whichPlat;
-    static Vector2 playerPos;
+    static Vector2 playerPos, restartPos, bossVec;
     static float timeJump, gravity;
-    static bool recTouch, spawnEnemyBool, snapTouch = false, snapTouch2 = false;
-    static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3;
-    static Texture2D myShip, enemy;
+    static bool recTouch, spawnEnemyBool, snapTouch = false, snapTouch2 = false, deathBtnPress, bossSpawn;
+    static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3, bossRec;
+    static Texture2D myShip, enemy, bossTex, bossShootTex;
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
     static List<Vector2> tripodSpeedList = new List<Vector2>();
-
+    public static bool BossSpawn
+    {
+        get { return bossSpawn; }
+        set { bossSpawn = value; }
+    }
+    public static Vector2 BossVec
+    {
+        get { return bossVec; }
+        set { bossVec = value; }
+    }
+    public static Rectangle BossRec
+    {
+        get { return bossRec; }
+        set { bossRec = value; }
+    }
+    public static Texture2D BossTex
+    {
+        get { return bossTex; }
+        set { bossTex = value; }
+    }
+    public static Texture2D BossShootTex
+    {
+        get { return bossShootTex; }
+        set { bossShootTex = value; }
+    }
+    public static bool DeathBtnPress
+    {
+        get { return deathBtnPress; }
+        set { deathBtnPress = value; }
+    }
     public static double HitTimer
     {
         get { return hitTimer; }

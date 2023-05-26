@@ -21,7 +21,7 @@ public class Health
             enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
             if (enemyRec.Intersects(GlobalConst.RecPlayer) && (gameTime.TotalGameTime.TotalSeconds > hitTimmer + 2))
             {
-                GlobalConst.Health -= 50;
+                GlobalConst.Health -= 100;
                 hitTimmer = gameTime.TotalGameTime.TotalSeconds;
                 
                 

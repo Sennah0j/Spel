@@ -13,7 +13,7 @@ using static System.Formats.Asn1.AsnWriter;
 public class Player
 {
     
-    public Vector2 playerSpeed, myshipSpeedDown;
+    public Vector2 playerSpeed, myshipSpeedDown, restartPos;
     public Rectangle recMyShip;
     public Vector2 playerPos;
     public Texture2D myship, playerShoot;
@@ -23,6 +23,9 @@ public class Player
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
+
+
+    
     
     Plattforms plattformsClass = new Plattforms();
     //public TimeSpan ElapsedGameTime { get; set; }
@@ -30,6 +33,7 @@ public class Player
     public float PlayerX()
     {
         return (playerPos.X);
+        restartPos.X = 0f;
     }
     public float playerY()
     {
@@ -42,7 +46,7 @@ public class Player
     }
     public void IntiPlayerCont()
     {
-        
+
         myshipSpeedDown.Y = 4f;
         playerPos.X = 0 + myship.Width * 4;
         playerPos.Y = GlobalConst.WindowHeight - myship.Height * 4;

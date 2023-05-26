@@ -16,12 +16,20 @@ public class DeathBtn
 	{
         return deathBtn = new Rectangle((GlobalConst.WindowWidth / 2) - 75, (GlobalConst.WindowHeight / 2) - 35, 150, 70);
     }
-  
+
+    public void MouseRec(MouseState mouse)
+    {
+        GlobalConst.MouseRec = new Rectangle(mouse.X, mouse.Y, 10, 10);
+
+    }
+
     public void Interact(MouseState mouse)
     {
         if (GlobalConst.MouseRec.Intersects(Btn()) && mouse.LeftButton == ButtonState.Pressed)
         {
-            //GlobalConst.SeneStatus = 0;
+            GlobalConst.DeathBtnPress = true;
+            GlobalConst.SeneStatus = 0;
+            GlobalConst.Health = 100;
         }
 
         if (GlobalConst.MouseRec.Intersects(Btn()))
