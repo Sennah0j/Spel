@@ -11,19 +11,41 @@ public static class GlobalConst
     static double hitTimer;
     static int scale = 4; //1 = default, 2 = twice the size
     static string[] splitBlockStr;
-    static int windowWidth, windowHeight, sceneStatus, health = 100;
+    static int windowWidth, windowHeight, sceneStatus, health = 100, bossHealth = 200;
     static string blockFile = "File", whichPlat;
     static Vector2 playerPos, restartPos, bossVec;
     static float timeJump, gravity;
     static bool recTouch, spawnEnemyBool, snapTouch = false, snapTouch2 = false, deathBtnPress, bossSpawn;
-    static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3, bossRec;
+    static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3, bossRec, playerRecPlat;
     static Texture2D myShip, enemy, bossTex, bossShootTex, healthPack, bulletTexture;
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
     static List<Vector2> tripodSpeedList = new List<Vector2>();
     static List<Vector2> packPosList = new List<Vector2>();
     static List<Vector2> bossBulletPos = new List<Vector2>();
+    static List<Vector2> bulletsList = new List<Vector2>();
+    static List<Vector2> bulletSpeedList = new List<Vector2>();
 
+    public static List<Vector2> BulletsList
+    {
+        get { return bulletsList; }
+        set { bulletsList = value; }
+    }
+    public static List<Vector2> BulletSpeedList
+    {
+        get { return bulletSpeedList; }
+        set { bulletSpeedList = value; }
+    }
+    public static int BossHealth
+    {
+        get { return bossHealth; }
+        set { bossHealth = value; }
+    }
+    public static Rectangle PlayerRecPlat
+    {
+        get { return playerRecPlat; }
+        set { playerRecPlat = value; }
+    }
     public static Texture2D BulletTexture
     {
         get { return bulletTexture; }

@@ -44,7 +44,18 @@ public class StartButton
             
 
             else if (GlobalConst.SeneStatus == 2)
-				GlobalConst.SeneStatus = 3;
+			{
+                GlobalConst.SeneStatus = 3;
+				GlobalConst.BossHealth = 200;
+            }
+
+			else if (GlobalConst.SeneStatus == 3) 
+			{
+				GlobalConst.SeneStatus = 0;
+				GlobalConst.DeathBtnPress = true;
+
+            }
+				
 			
 
             

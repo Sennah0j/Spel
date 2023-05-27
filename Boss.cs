@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading;
 
 public class Boss
@@ -13,6 +12,7 @@ public class Boss
     
     public List<Vector2> bossbulletSpeedList = new List<Vector2>();
     public Vector2 bossVec, bossBulletPos, bossBulletSpeed, tempBull;
+    public Rectangle bulletRec;
     double timeSinceLastBullet, angle, totalSpeed = 10;
 
 	public void Initizlize()
@@ -24,7 +24,7 @@ public class Boss
 	}
 	public void BossRecMeth()
 	{
-		GlobalConst.BossRec = new Rectangle(GlobalConst.BossVec.ToPoint(), new Point(GlobalConst.BossTex.Width * 12, GlobalConst.BossTex.Height * 6));
+		GlobalConst.BossRec = new Rectangle(GlobalConst.BossVec.ToPoint(), new Point(GlobalConst.BossTex.Width * 12, GlobalConst.BossTex.Height * 12));
 	}
 
 	public void Shooting(GameTime gameTime)
@@ -92,4 +92,20 @@ public class Boss
 
         
     }
+
+    public void BossHealthCheck()
+    {
+        for(int i = 0; i < GlobalConst.BulletsList.Count; i++) 
+        {
+            bulletRec = new Rectangle((int)GlobalConst.BulletsList[i].X, (int)GlobalConst.BulletsList[i].Y, GlobalConst.BulletTexture.Width, GlobalConst.BulletTexture.Height);
+
+            if (bulletRec.Intersects(GlobalConst.BossRec))
+            {
+                GlobalConst.BossHealth -= 10;
+                GlobalConst.BulletsList.RemoveAt(i);
+                GlobalConst.BulletSpeedList.RemoveAt(i);
+            }
+        }
+    }
+
 }

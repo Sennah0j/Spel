@@ -66,7 +66,7 @@ public class Plattforms
     public bool CheckColission()
     {
 
-        if (GlobalConst.RecPlayer.Intersects(GlobalConst.Plat1))
+        if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat1))
         {
            
             
@@ -84,7 +84,7 @@ public class Plattforms
         }
 
 
-        else if (GlobalConst.RecPlayer.Intersects(GlobalConst.Plat2))
+        else if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat2))
         {
             
             if (GlobalConst.SnapTouch2 == false)
@@ -100,7 +100,7 @@ public class Plattforms
             return true;
         }
 
-        else if (GlobalConst.RecPlayer.Intersects(GlobalConst.Plat3))
+        else if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat3))
         {
             
             

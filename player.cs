@@ -43,6 +43,7 @@ public class Player
     public void playerRecUpdate()
     {
         GlobalConst.RecPlayer = new Rectangle(playerPos.ToPoint(), new Point(myship.Width * GlobalConst.SCALE, myship.Height * GlobalConst.SCALE));
+        GlobalConst.PlayerRecPlat = new Rectangle((int)playerPos.X, (int)playerPos.Y + myship.Height * GlobalConst.SCALE, myship.Width * GlobalConst.SCALE, 1);
     }
     public void IntiPlayerCont()
     {
