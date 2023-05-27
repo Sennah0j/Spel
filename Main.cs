@@ -52,7 +52,7 @@ namespace Pong
         Health healthClass = new Health();
         DeathBtn DeathBtnClass = new DeathBtn();
         Boss BossClass = new Boss();
-
+        Pack HealthPack = new Pack();
         
         
         
@@ -132,6 +132,7 @@ namespace Pong
             bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
             GlobalConst.BossTex = Content.Load<Texture2D>("Sprites/Boss");
             GlobalConst.BossShootTex = Content.Load<Texture2D>("Sprites/BossShoot");
+            GlobalConst.HealthPack = Content.Load<Texture2D>("Sprites/HealthPack");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
@@ -194,7 +195,7 @@ namespace Pong
             EnemyClass.BoundaryCheckEn();
             EnemyClass.EnemySPeed();
             CheckCollisionEn();
-            EnemyClass.CheckCollisionEn();
+            
             StartButtonClass.MouseRec(mouse);
             healthClass.EnemyHit(gameTime);
             healthClass.HealthBar();
@@ -214,9 +215,11 @@ namespace Pong
          
         public void CheckCollisionEn()
         {
+            int count = 0;
             foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
             {
                 
+                Random slump = new Random();
                 enemyRec = new Rectangle(Convert.ToInt32(enemy.X), Convert.ToInt32(enemy.Y), GlobalConst.Enemy.Width, GlobalConst.Enemy.Height);
 
                 for(int i = 0; i < bulletClass.bulletsList.Count; i++)
@@ -224,15 +227,20 @@ namespace Pong
                     bulletRec = new Rectangle((int)bulletClass.bulletsList[i].X, (int)bulletClass.bulletsList[i].Y , bulletClass.bulletTexture.Width * 2, bulletClass.bulletTexture.Height * 2);
                     if (bulletRec.Intersects(enemyRec))
                     {
-
+                        if (slump.Next(1, 1) == 1)
+                        {
+                            HealthPack.Drop(GlobalConst.TripodPosList[count]);
+                        }
                         GlobalConst.TripodPosList.Remove(enemy);
                         GlobalConst.TripodSpeedList.Remove(enemy);
                         bulletClass.bulletsList.RemoveAt(i);
                         bulletClass.bulletSpeedList.RemoveAt(i);
 
+                        
+
                     }
                 }
-                
+                count++;
             }
            
 
@@ -299,6 +307,7 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 170), Color.White);
                 spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,190), Color.White);
                 spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 210), Color.White);
+                
 
 
             }
@@ -369,11 +378,15 @@ namespace Pong
                 {
                     spriteBatch.Draw(player.myship, GlobalConst.PlayerPos, null, Color.White, 0, origin, GlobalConst.SCALE, SpriteEffects.None, 0);
                 }
-               
 
                 foreach (Vector2 bullets in bulletClass.bulletsList)
                 {
                     spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+                }
+
+                foreach (Vector2 packs in HealthPack.packPosList)
+                {
+                    spriteBatch.Draw(GlobalConst.HealthPack, packs, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
 
 
                 }
@@ -422,8 +435,6 @@ namespace Pong
             foreach (Vector2 bullets in bulletClass.bulletsList)
             {
                 spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
-
-
             }
             spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
         }
