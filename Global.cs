@@ -17,11 +17,23 @@ public static class GlobalConst
     static float timeJump, gravity;
     static bool recTouch, spawnEnemyBool, snapTouch = false, snapTouch2 = false, deathBtnPress, bossSpawn;
     static Rectangle recPlayer, startButton, mouseRec, plat1, plat2, plat3, bossRec;
-    static Texture2D myShip, enemy, bossTex, bossShootTex, healthPack;
+    static Texture2D myShip, enemy, bossTex, bossShootTex, healthPack, bulletTexture;
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
     static List<Vector2> tripodSpeedList = new List<Vector2>();
     static List<Vector2> packPosList = new List<Vector2>();
+    static List<Vector2> bossBulletPos = new List<Vector2>();
+
+    public static Texture2D BulletTexture
+    {
+        get { return bulletTexture; }
+        set { bulletTexture = value; }
+    }
+    public static List<Vector2> BossBulletPos
+    {
+        get { return bossBulletPos; }
+        set { bossBulletPos = value; }
+    }
     public static List<Vector2> PackPosList
     {
         get { return packPosList; }

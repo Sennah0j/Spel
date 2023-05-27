@@ -129,7 +129,8 @@ namespace Pong
             player.myship = Content.Load<Texture2D>("Sprites/slime");
             player.playerShoot = Content.Load<Texture2D>("Sprites/SlimeShooting");
             GlobalConst.Enemy = Content.Load < Texture2D>("Sprites/tripod");
-            bulletClass.bulletTexture = Content.Load < Texture2D>("Sprites/bullet");
+            GlobalConst.BulletTexture = Content.Load < Texture2D>("Sprites/bullet");
+
             GlobalConst.BossTex = Content.Load<Texture2D>("Sprites/Boss");
             GlobalConst.BossShootTex = Content.Load<Texture2D>("Sprites/BossShoot");
             GlobalConst.HealthPack = Content.Load<Texture2D>("Sprites/HealthPack");
@@ -170,8 +171,9 @@ namespace Pong
 
         }
         
-        public void BossMap()
+        public void BossMap(GameTime gameTime)
         {
+            
             BossClass.Initizlize();
         }
 
@@ -201,7 +203,8 @@ namespace Pong
             healthClass.EnemyHit(gameTime);
             healthClass.HealthBar();
 
-            BossMap();
+            
+            BossMap(gameTime);
 
             Cursor();
             player.playerRecUpdate();
@@ -225,7 +228,7 @@ namespace Pong
 
                 for(int i = 0; i < bulletClass.bulletsList.Count; i++)
                 {
-                    bulletRec = new Rectangle((int)bulletClass.bulletsList[i].X, (int)bulletClass.bulletsList[i].Y , bulletClass.bulletTexture.Width * 2, bulletClass.bulletTexture.Height * 2);
+                    bulletRec = new Rectangle((int)bulletClass.bulletsList[i].X, (int)bulletClass.bulletsList[i].Y , GlobalConst.BulletTexture.Width * 2, GlobalConst.BulletTexture.Height * 2);
                     if (bulletRec.Intersects(enemyRec))
                     {
                         if (slump.Next(0, 4) == 0)
@@ -301,14 +304,15 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Y." + mouse.Y + " X." + mouse.X + " " + plattformsClass.recTouch, new Vector2(10, 30), Color.White);
                 spriteBatch.DrawString(gameFont, "X." + player.playerPos.X + "Y." + player.playerPos.Y, new Vector2(10, 50), Color.White);
                 spriteBatch.DrawString(gameFont, "Bullets: " + bulletClass.bulletsList.Count, new Vector2(10, 70), Color.White);
-                spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
-                spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
-                spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
-                spriteBatch.DrawString(gameFont, "Health packs: " + GlobalConst.PackPosList.Count, new Vector2(10, 150), Color.White);
-                spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 170), Color.White);
-                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 190), Color.White);
-                spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,210), Color.White);
-                spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 230), Color.White);
+                spriteBatch.DrawString(gameFont, "Boss bullets: " + GlobalConst.BossBulletPos.Count, new Vector2(10, 90), Color.White);
+                spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 110), Color.White);
+                spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 130), Color.White);
+                spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 150), Color.White);
+                spriteBatch.DrawString(gameFont, "Health packs: " + GlobalConst.PackPosList.Count, new Vector2(10, 170), Color.White);
+                spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 190), Color.White);
+                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 210), Color.White);
+                spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,230), Color.White);
+                spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 250), Color.White);
                 
 
 
@@ -384,7 +388,7 @@ namespace Pong
 
                 foreach (Vector2 bullets in bulletClass.bulletsList)
                 {
-                    spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+                    spriteBatch.Draw(GlobalConst.BulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
                 }
 
                 foreach (Vector2 packs in GlobalConst.PackPosList)
@@ -408,8 +412,11 @@ namespace Pong
             StartButtonClass.InteractBtn(mouse);
         }
 
-        public void BossLevel()
+        public void BossLevel(GameTime gameTime)
         {
+           
+            BossClass.Shooting(gameTime);
+
             GraphicsDevice.Clear(backColor);
 
             spriteBatch.Draw(touchPlat, plattformsClass.Platform1(), backColor);
@@ -419,11 +426,9 @@ namespace Pong
             spriteBatch.Draw(platform, plattformsClass.Platform2(), Color.Black);
             spriteBatch.Draw(platform, plattformsClass.Platform3(), Color.Black);
 
-            spriteBatch.Draw(GlobalConst.BossTex, BossClass.bossVec, null, Color.White, 0, bossOrigin, 6, SpriteEffects.None, 0);
-            foreach (Vector2 cn in GlobalConst.TripodPosList)
-            {
-                spriteBatch.Draw(GlobalConst.Enemy, cn, Color.White);
-            }
+            
+
+            
 
             if (bulletClass.pressed == true)
             {
@@ -437,8 +442,17 @@ namespace Pong
 
             foreach (Vector2 bullets in bulletClass.bulletsList)
             {
-                spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+                spriteBatch.Draw(GlobalConst.BulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
             }
+
+            spriteBatch.Draw(GlobalConst.BossTex, GlobalConst.BossVec, null, Color.White, 0, bossOrigin, 12, SpriteEffects.None, 0);
+
+            foreach (Vector2 bullets in GlobalConst.BossBulletPos)
+            {
+                spriteBatch.Draw(GlobalConst.BulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+            }
+
+            
             spriteBatch.Draw(healthBarTex, healthClass.HealthBar(), Color.Red);
         }
 
@@ -476,7 +490,8 @@ namespace Pong
             }
             else if( GlobalConst.SeneStatus == 3)
             {
-                BossLevel();
+                Delete.DeleteMethod();
+                BossLevel(gameTime);
             }
             else if (GlobalConst.SeneStatus == -1)
             {

@@ -103,7 +103,7 @@ public class Plattforms
         else if (GlobalConst.RecPlayer.Intersects(GlobalConst.Plat3))
         {
             
-
+            
             if (GlobalConst.SnapTouch2 == false)
             {
                 playerPos.Y = (GlobalConst.WindowHeight / 15) * 11 - GlobalConst.MyShip.Height * 4;

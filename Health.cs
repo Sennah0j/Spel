@@ -10,7 +10,7 @@ using System.Threading;
 
 public class Health
 {
-    Rectangle enemyRec, healthBar;
+    Rectangle enemyRec, healthBar, bulletRec;
     double hitTimmer = 0;
     bool hitTruFalse;
     public void EnemyHit(GameTime gameTime)
@@ -33,6 +33,17 @@ public class Health
             
         }
         
+        foreach (Vector2 bullet in GlobalConst.BossBulletPos.ToList())
+        {
+            bulletRec = new Rectangle((int)bullet.X, (int)bullet.Y, GlobalConst.BulletTexture.Width, GlobalConst.BulletTexture.Height);
+
+            if(bulletRec.Intersects(GlobalConst.RecPlayer) )
+            {
+                GlobalConst.Health -= 5;
+                GlobalConst.BossBulletPos.Remove(bullet);
+            }
+        }
+
         GlobalConst.HitTimer = (hitTimmer + 4) - gameTime.TotalGameTime.TotalSeconds;
         
         

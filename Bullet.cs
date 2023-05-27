@@ -11,7 +11,7 @@ using System.Threading;
 public class Bullet
 {
 	Player playerClass = new Player();
-	public Texture2D bulletTexture;
+	
 	Vector2 bulletPos;
 	Vector2 bulletSpeed;
 	public List<Vector2> bulletsList = new List<Vector2>();
