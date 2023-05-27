@@ -11,11 +11,10 @@ using System.Threading;
 public class Bullet
 {
 	Player playerClass = new Player();
-	public Texture2D bulletTexture;
+	
 	Vector2 bulletPos;
 	Vector2 bulletSpeed;
-	public List<Vector2> bulletsList = new List<Vector2>();
-	public List<Vector2> bulletSpeedList = new List<Vector2>();
+	
 	Rectangle bulletRec;
     Vector2 tempBull;
 	Vector2 tempBullSpeed;
@@ -38,7 +37,7 @@ public class Bullet
 
         double totalSpeed = 10, angle;
 
-        if ((mouse.LeftButton == ButtonState.Pressed) && (pressed == false))
+        if ((mouse.LeftButton == ButtonState.Pressed) && (pressed == false) && (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet+ 500))
 		{
 
             
@@ -59,10 +58,10 @@ public class Bullet
                 bulletSpeed.Y = (float)Math.Round(Math.Sin(angle + Math.PI) * totalSpeed, 7);
             }
 
-            bulletsList.Add(bulletPos);
-            bulletSpeedList.Add(bulletSpeed);
+            GlobalConst.BulletsList.Add(bulletPos);
+            GlobalConst.BulletSpeedList.Add(bulletSpeed);
 
-            //timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
+            timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
             pressed = true;
         }
 
@@ -71,16 +70,16 @@ public class Bullet
             pressed = false;
         }
 
-        for (int i = 0; i < bulletsList.Count; i++)
+        for (int i = 0; i < GlobalConst.BulletsList.Count; i++)
         {
 
-            tempBull.X = bulletsList.ElementAt(i).X;
-            tempBull.Y = bulletsList.ElementAt(i).Y;
+            tempBull.X = GlobalConst.BulletsList.ElementAt(i).X;
+            tempBull.Y = GlobalConst.BulletsList.ElementAt(i).Y;
 
-            tempBull.Y = tempBull.Y - bulletSpeedList[i].Y;
-            tempBull.X = tempBull.X - bulletSpeedList[i].X;
+            tempBull.Y = tempBull.Y - GlobalConst.BulletSpeedList[i].Y;
+            tempBull.X = tempBull.X - GlobalConst.BulletSpeedList[i].X;
 
-            bulletsList[i] = tempBull;
+            GlobalConst.BulletsList[i] = tempBull;
 
         }
 
@@ -89,21 +88,21 @@ public class Bullet
 
 	public void BulletBondaryCheck()
 	{
-        for(int i = 0; i < bulletsList.Count; i++)
+        for(int i = 0; i < GlobalConst.BulletsList.Count; i++)
         {
-            if (bulletsList.ElementAt(i).X <= 0 || bulletsList.ElementAt(i).X >= GlobalConst.WindowWidth)
+            if (GlobalConst.BulletsList.ElementAt(i).X <= 0 || GlobalConst.BulletsList.ElementAt(i).X >= GlobalConst.WindowWidth)
             {
-                bulletsList.RemoveAt(i);
-                bulletSpeedList.RemoveAt(i);
+                GlobalConst.BulletsList.RemoveAt(i);
+                GlobalConst.BulletSpeedList.RemoveAt(i);
             }
         }    
 
-        for(int i = 0; i < bulletsList.Count; i++)
+        for(int i = 0; i < GlobalConst.BulletsList.Count; i++)
         {
-            if ((bulletsList.ElementAt(i).Y <= 0) || (bulletsList.ElementAt(i).Y >= GlobalConst.WindowHeight))
+            if ((GlobalConst.BulletsList.ElementAt(i).Y <= 0) || (GlobalConst.BulletsList.ElementAt(i).Y >= GlobalConst.WindowHeight))
             {
-                bulletsList.RemoveAt(i);
-                bulletSpeedList.RemoveAt(i);
+                GlobalConst.BulletsList.RemoveAt(i);
+                GlobalConst.BulletSpeedList.RemoveAt(i);
             }
         }
         

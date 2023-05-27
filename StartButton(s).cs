@@ -14,6 +14,7 @@ public class StartButton
 	public Rectangle mouseRec, startBtn;
 	Enemy EnemyClass = new Enemy();
 	Player player = new Player();
+	Boss BossClass = new Boss();
     public Rectangle StartBtn()
 	{
 		return startBtn = new Rectangle((GlobalConst.WindowWidth / 2) - 75, (GlobalConst.WindowHeight / 2) - 35, 150, 70);
@@ -26,16 +27,47 @@ public class StartButton
     }
 	public void InteractBtn(MouseState mouse)
 	{
-		if (GlobalConst.MouseRec.Intersects(StartBtn()) && mouse.LeftButton == ButtonState.Pressed)
+		if (GlobalConst.MouseRec.Intersects(StartBtn()) && mouse.LeftButton == ButtonState.Pressed && GlobalConst.DeathBtnPress == false)
 		{
 			if (GlobalConst.SeneStatus == 0)
-				GlobalConst.SeneStatus = 1;
-            
-			else if (GlobalConst.SeneStatus == 1)
-				GlobalConst.SeneStatus = 2;
+			{
+                GlobalConst.SeneStatus = 1;
+				GlobalConst.Health = 100;
+                GlobalConst.SpawnEnemyBool = true;
+            }
+				
 
-            GlobalConst.SpawnEnemyBool = true;
+
+			else if (GlobalConst.SeneStatus == 1)	
+			{
+				GlobalConst.SeneStatus = 2;
+                GlobalConst.SpawnEnemyBool = true;
+            }
+            
+
+            else if (GlobalConst.SeneStatus == 2)
+			{
+                GlobalConst.SeneStatus = 3;
+                BossClass.Initizlize();
+                GlobalConst.BossHealth = 200;
+            }
+
+			else if (GlobalConst.SeneStatus == 3) 
+			{
+				GlobalConst.SeneStatus = 0;
+				GlobalConst.DeathBtnPress = true;
+
+            }
+				
+			
+
+            
         }
+		else if(mouse.LeftButton == ButtonState.Released)
+		{
+			GlobalConst.DeathBtnPress = false;
+		}
+
 		if(GlobalConst.MouseRec.Intersects(StartBtn()))
 		{
 			GlobalConst.StartButtonColor = Color.White;

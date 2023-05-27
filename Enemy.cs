@@ -6,19 +6,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Collections.Generic;
 
 
 public class Enemy
 {
     int points;
     
-    public List<Vector2> tripodSpeedList = new List<Vector2>();
-    public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2;
+    
+    public Vector2 tripod_pos, tripod_speed, tripodTest, tripod_pos2, tempSpeed;
     public Texture2D tripod;
+    public List<bool> tripodTouch = new List<bool>();
 
+ 
     public void SpawnEnemy(int j)
     {
+        
         Random slump = new Random();
         for (int i = 0; i < j; i++)
         {
@@ -27,9 +29,11 @@ public class Enemy
 
             GlobalConst.TripodPosList.Add(tripod_pos);
 
-            tripod_speed.X = slump.Next(-5, 5);
-            tripod_speed.Y = slump.Next(-5, 5);
-            tripodSpeedList.Add(tripod_speed);
+            tripod_speed.X = slump.Next(-10, 10);
+            tripod_speed.Y = 2;
+            GlobalConst.TripodSpeedList.Add(tripod_speed);
+
+            tripodTouch.Add(false);
         }
 
 
@@ -38,7 +42,7 @@ public class Enemy
     {
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            GlobalConst.TripodPosList[i] = GlobalConst.TripodPosList[i] + tripodSpeedList[i];
+            GlobalConst.TripodPosList[i] = GlobalConst.TripodPosList[i] + GlobalConst.TripodSpeedList[i];
         }
     }
     public void EnemyRndLocation(int j)
@@ -49,7 +53,7 @@ public class Enemy
         tripod_pos2.Y = slump.Next(0, GlobalConst.WindowHeight - 400);
 
         GlobalConst.TripodPosList[j] = tripod_pos2;
-
+        
        
 
     }
@@ -58,31 +62,20 @@ public class Enemy
     {
         for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
         {
-            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight - tripod.Height) || GlobalConst.TripodPosList[i].Y <= 0 + tripod.Height)
+            if ((GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight - GlobalConst.Enemy.Height) || GlobalConst.TripodPosList[i].Y <= 0 + GlobalConst.Enemy.Height))
             {
-                tripodSpeedList[i] = -tripodSpeedList[i];
+                tempSpeed.X = GlobalConst.TripodSpeedList[i].X;
+                tempSpeed.Y = -GlobalConst.TripodSpeedList[i].Y;
+                GlobalConst.TripodSpeedList[i] = tempSpeed;
+
             }
-        }
-        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
-        {
-            if (GlobalConst.TripodPosList[i].X >= (GlobalConst.WindowWidth - tripod.Width) || GlobalConst.TripodPosList[i].X <= 0 + tripod.Width)
+            if ((GlobalConst.TripodPosList[i].X >= (GlobalConst.WindowWidth - GlobalConst.Enemy.Width) || GlobalConst.TripodPosList[i].X <= 0 + GlobalConst.Enemy.Width))
             {
-                tripodSpeedList[i] = -tripodSpeedList[i];
+                tempSpeed.X = -GlobalConst.TripodSpeedList[i].X;
+                tempSpeed.Y = GlobalConst.TripodSpeedList[i].Y;
+                GlobalConst.TripodSpeedList[i] = tempSpeed;
             }
         }
     }
-    public void CheckCollisionEn()
-    {
-        
-        
-        for (int i = 0; i < GlobalConst.TripodPosList.Count; i++)
-        {
-            if (GlobalConst.TripodPosList[i].Y >= (GlobalConst.WindowHeight + tripod.Height))
-            {
-                points += 10;
-            }
-        }
 
-
-    }
 }

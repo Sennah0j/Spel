@@ -13,7 +13,7 @@ using static System.Formats.Asn1.AsnWriter;
 public class Player
 {
     
-    public Vector2 playerSpeed, myshipSpeedDown;
+    public Vector2 playerSpeed, myshipSpeedDown, restartPos;
     public Rectangle recMyShip;
     public Vector2 playerPos;
     public Texture2D myship, playerShoot;
@@ -23,25 +23,31 @@ public class Player
     int points, countNum;
     public float timeJump, gravity = 0.2f, gravitySpeed;
     public bool touch;
-   
+
+
+    
+    
+    Plattforms plattformsClass = new Plattforms();
     //public TimeSpan ElapsedGameTime { get; set; }
 
     public float PlayerX()
     {
         return (playerPos.X);
+        restartPos.X = 0f;
     }
     public float playerY()
     {
         return (playerPos.Y);
     }
-
+    
     public void playerRecUpdate()
     {
         GlobalConst.RecPlayer = new Rectangle(playerPos.ToPoint(), new Point(myship.Width * GlobalConst.SCALE, myship.Height * GlobalConst.SCALE));
+        GlobalConst.PlayerRecPlat = new Rectangle((int)playerPos.X, (int)playerPos.Y + myship.Height * GlobalConst.SCALE, myship.Width * GlobalConst.SCALE, 1);
     }
     public void IntiPlayerCont()
     {
-        
+
         myshipSpeedDown.Y = 4f;
         playerPos.X = 0 + myship.Width * 4;
         playerPos.Y = GlobalConst.WindowHeight - myship.Height * 4;
@@ -80,8 +86,8 @@ public class Player
     
     public void KeyMovements(GameTime gameTime)
     {
-       
-        KeyboardState keyboardState = Keyboard.GetState();
+       playerPos = GlobalConst.PlayerPos;
+       KeyboardState keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.D))
             playerPos.X = (playerPos.X + playerSpeed.X);
         if (keyboardState.IsKeyDown(Keys.A))
@@ -108,14 +114,13 @@ public class Player
             gravity = 0.89f;
         }
 
+
+
+
+
         if ((playerPos.Y >= GlobalConst.WindowHeight - myship.Height * 4))
         {
-            countNum = 0;
-            playerSpeed.Y = 0f;
-            myshipSpeedDown.Y = 0f;
-            gravitySpeed = 0f;
-            gravity = 0f;
-            timeJump = 0f;
+            
 
 
             if (GlobalConst.SnapTouch == false)
@@ -126,10 +131,9 @@ public class Player
                 GlobalConst.SnapTouch = true;
             }
 
-
-            touch = true;
+            GlobalConst.RecTouch = true;
+           
         }
-
         if (GlobalConst.RecTouch)
         {
             countNum = 0;
@@ -138,24 +142,25 @@ public class Player
             gravitySpeed = 0f;
             gravity = 0f;
             timeJump = 0f;
-        }
-        
-        
-        
-        else if(GlobalConst.SnapTouch == true)
-        {
-            playerSpeed.Y = 4f;
-            GlobalConst.SnapTouch = false;
+            touch = true;
         }
 
         //                                                                 SCALE
         else if (((playerPos.Y == GlobalConst.WindowHeight - myship.Height * 4) && keyboardState.IsKeyDown(Keys.W) == true) || (playerPos.Y == 0 && keyboardState.IsKeyDown(Keys.S) == true) )
         {
+            
             playerSpeed.Y = 4f;
-            GlobalConst.SnapTouch = false;
+           
         }
+        
+        else if (plattformsClass.CheckColission())
+        {
+
+        }
+
         else
         {
+            GlobalConst.SnapTouch = false;
             points = 420;
             gravitySpeed = 7f;
             gravity = 0.89f;

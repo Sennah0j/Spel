@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
+
+
 public class Plattforms
 {
     int size;
@@ -31,17 +33,17 @@ public class Plattforms
         GlobalConst.Split = blockRead.Split(",");
 
         //                   X   Y   Xlång   Ytjock
-        return platform1 = new Rectangle(GlobalConst.WindowWidth - 700, GlobalConst.WindowHeight / 2, 550, 10);
+        return GlobalConst.Plat1 = new Rectangle(GlobalConst.WindowWidth - 700, GlobalConst.WindowHeight / 2, 550, 10);
 
     }
 
     public Rectangle Platform2()
     {
-        return platform2 = new Rectangle(400, GlobalConst.WindowHeight / 2, 550, 10);
+        return GlobalConst.Plat2 = new Rectangle(400, GlobalConst.WindowHeight / 2, 550, 10);
     }
     public Rectangle Platform3()
     {
-        return platform3 = new Rectangle((GlobalConst.WindowWidth / 2) - 400, (GlobalConst.WindowHeight / 15) * 11, 800, 10);
+        return GlobalConst.Plat3 = new Rectangle((GlobalConst.WindowWidth / 2) - 400, (GlobalConst.WindowHeight / 15) * 11, 800, 10);
     }
     public Rectangle Platform4()
     {
@@ -61,52 +63,63 @@ public class Plattforms
         return platform3 = new Rectangle(470, 170, 230, 50);
     }
 
-    public bool CheckColissionPlat1()
+    public bool CheckColission()
     {
 
-        if (GlobalConst.RecPlayer.Intersects(platform1))
+        if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat1))
         {
+           
+            
+            if (GlobalConst.SnapTouch2 == false)
+            {
+                playerPos.Y = GlobalConst.WindowHeight / 2 - GlobalConst.MyShip.Height * 4;
+                GlobalConst.WhichPlat = "Plat1";
+                playerPos.X = GlobalConst.PlayerPos.X;
+                GlobalConst.PlayerPos = playerPos;
+              
+                GlobalConst.SnapTouch2 = true;
+            }
             GlobalConst.RecTouch = true;
+            return true;
+        }
 
 
-            platformTouch = true;
+        else if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat2))
+        {
+            
+            if (GlobalConst.SnapTouch2 == false)
+            {
+                playerPos.Y = GlobalConst.WindowHeight / 2 - GlobalConst.MyShip.Height * 4;
+                GlobalConst.WhichPlat = "Plat2";
+                playerPos.X = GlobalConst.PlayerPos.X;
+                GlobalConst.PlayerPos = playerPos;
+               
+                GlobalConst.SnapTouch2 = true;
+            }
+            GlobalConst.RecTouch = true;
+            return true;
+        }
+
+        else if (GlobalConst.PlayerRecPlat.Intersects(GlobalConst.Plat3))
+        {
+            
+            
+            if (GlobalConst.SnapTouch2 == false)
+            {
+                playerPos.Y = (GlobalConst.WindowHeight / 15) * 11 - GlobalConst.MyShip.Height * 4;
+                GlobalConst.WhichPlat = "Plat3";
+                playerPos.X  = GlobalConst.PlayerPos.X;
+                GlobalConst.PlayerPos = playerPos;
+               
+                GlobalConst.SnapTouch2 = true;
+            }
+            GlobalConst.RecTouch = true;
             return true;
         }
         else
         {
             GlobalConst.RecTouch = false;
-            platformTouch = false;
-            return false;
-        }
-
-    }
-    public bool CheckColissionPlat2()
-    {
-        if (GlobalConst.RecPlayer.Intersects(platform2))
-        {
-            GlobalConst.RecTouch = true;
-            platformTouch = true;
-            return true;
-        }
-        else
-        {
-            GlobalConst.RecTouch = false;
-            platformTouch = false;
-            return false;
-        }
-    }
-    public bool CheckColissionPlat3()
-    {
-        if (GlobalConst.RecPlayer.Intersects(platform3))
-        {
-            GlobalConst.RecTouch = true;
-            platformTouch = true;
-            return true;
-        }
-        else
-        {
-            GlobalConst.RecTouch = false;
-            platformTouch = false;
+            GlobalConst.SnapTouch2 = false;
             return false;
         }
 
