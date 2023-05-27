@@ -17,15 +17,7 @@ public class Enemy
     public Texture2D tripod;
     public List<bool> tripodTouch = new List<bool>();
 
-    public void DeleteEnemy()
-    {
-        foreach (Vector2 enemy in GlobalConst.TripodPosList.ToList())
-        {
-            
-            GlobalConst.TripodPosList.Remove(enemy);
-            GlobalConst.TripodSpeedList.Remove(enemy);
-        }
-    }
+ 
     public void SpawnEnemy(int j)
     {
         

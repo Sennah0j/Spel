@@ -21,7 +21,12 @@ public static class GlobalConst
     static Color startButtonColor ;
     static List<Vector2> tripod_pos_list = new List<Vector2>();
     static List<Vector2> tripodSpeedList = new List<Vector2>();
-
+    static List<Vector2> packPosList = new List<Vector2>();
+    public static List<Vector2> PackPosList
+    {
+        get { return packPosList; }
+        set { packPosList = value; }
+    }
     public static Texture2D HealthPack
     {
         get { return healthPack; }

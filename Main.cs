@@ -53,7 +53,7 @@ namespace Pong
         DeathBtn DeathBtnClass = new DeathBtn();
         Boss BossClass = new Boss();
         Pack HealthPack = new Pack();
-        
+        DeleteClass Delete = new DeleteClass();
         
         
         public Main()
@@ -182,6 +182,7 @@ namespace Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            HealthPack.TouchCheck();
 
             PlattformSpawn();
             player.KeyMovements(gameTime);
@@ -227,7 +228,7 @@ namespace Pong
                     bulletRec = new Rectangle((int)bulletClass.bulletsList[i].X, (int)bulletClass.bulletsList[i].Y , bulletClass.bulletTexture.Width * 2, bulletClass.bulletTexture.Height * 2);
                     if (bulletRec.Intersects(enemyRec))
                     {
-                        if (slump.Next(1, 1) == 1)
+                        if (slump.Next(0, 4) == 0)
                         {
                             HealthPack.Drop(GlobalConst.TripodPosList[count]);
                         }
@@ -303,10 +304,11 @@ namespace Pong
                 spriteBatch.DrawString(gameFont, "Mouse press:  " + bulletClass.pressed, new Vector2(10, 90), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene: " + GlobalConst.SeneStatus + " " + SceneChangeClass.keyDown.ToString(), new Vector2(10, 110), Color.White);
                 spriteBatch.DrawString(gameFont, "Scene name: " + sceneName , new Vector2(10, 130), Color.White);
-                spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 150), Color.White);
-                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 170), Color.White);
-                spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,190), Color.White);
-                spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 210), Color.White);
+                spriteBatch.DrawString(gameFont, "Health packs: " + GlobalConst.PackPosList.Count, new Vector2(10, 150), Color.White);
+                spriteBatch.DrawString(gameFont, "Enemy left: " + GlobalConst.TripodPosList.Count, new Vector2(10, 170), Color.White);
+                spriteBatch.DrawString(gameFont, "Platform touch: " + plattformsClass.platformTouch + " Which Plat: " + GlobalConst.WhichPlat + " Snap Touch " + GlobalConst.SnapTouch, new Vector2(10, 190), Color.White);
+                spriteBatch.DrawString(gameFont, "Health: " + GlobalConst.Health, new Vector2(10,210), Color.White);
+                spriteBatch.DrawString(gameFont, "Hit timer: " + (int)GlobalConst.HitTimer, new Vector2(10, 230), Color.White);
                 
 
 
@@ -350,6 +352,7 @@ namespace Pong
             }
             if(GlobalConst.TripodPosList.Count == 0)
             {
+                Delete.DeleteMethod();
                 LevelClear();
             }
             else
@@ -384,7 +387,7 @@ namespace Pong
                     spriteBatch.Draw(bulletClass.bulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
                 }
 
-                foreach (Vector2 packs in HealthPack.packPosList)
+                foreach (Vector2 packs in GlobalConst.PackPosList)
                 {
                     spriteBatch.Draw(GlobalConst.HealthPack, packs, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
 
@@ -451,7 +454,7 @@ namespace Pong
             if(GlobalConst.Health == 0)
             {
                 GlobalConst.SeneStatus = -1;
-                EnemyClass.DeleteEnemy();
+                Delete.DeleteMethod();
                 
             }
 
