@@ -34,7 +34,7 @@ public class Boss
         
         if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 500))
         {
-            bossBulletPos.X = ((GlobalConst.BossVec.X) +(GlobalConst.BossTex.Width) * 12);
+            bossBulletPos.X = ((GlobalConst.BossVec.X) + ((GlobalConst.BossTex.Width)/ 2) * 12);
             bossBulletPos.Y = (GlobalConst.BossVec.Y + ((GlobalConst.BossTex.Height / 2)* 12));
 
             angle = Math.Atan((GlobalConst.PlayerPos.Y - bossBulletPos.Y) / (GlobalConst.PlayerPos.X - bossBulletPos.X));
