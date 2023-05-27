@@ -9,7 +9,7 @@ using System.Threading;
 
 public class Boss
 {
-    
+    Random slump = new Random();
     public List<Vector2> bossbulletSpeedList = new List<Vector2>();
     public Vector2 bossVec, bossBulletPos, bossBulletSpeed, tempBull;
     public Rectangle bulletRec;
@@ -17,10 +17,12 @@ public class Boss
 
 	public void Initizlize()
 	{
-		bossVec.X = GlobalConst.WindowWidth / 2 - ((GlobalConst.BossTex.Width * 12) / 2);
-		bossVec.Y = GlobalConst.WindowHeight - GlobalConst.BossTex.Height * 12;
+		//bossVec.X = GlobalConst.WindowWidth / 2 - ((GlobalConst.BossTex.Width * 12) / 2);
+		//bossVec.Y = GlobalConst.WindowHeight - GlobalConst.BossTex.Height * 12;
+        bossVec.X = slump.Next(0,GlobalConst.WindowWidth - GlobalConst.BossTex.Width);
+        bossVec.Y = slump.Next(0, GlobalConst.WindowHeight - GlobalConst.BossTex.Height);
 
-		GlobalConst.BossVec = bossVec;
+        GlobalConst.BossVec = bossVec;
 	}
 	public void BossRecMeth()
 	{
@@ -32,8 +34,8 @@ public class Boss
         
         if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 500))
         {
-            bossBulletPos.X = ((GlobalConst.BossVec.X) + GlobalConst.BossTex.Width);
-            bossBulletPos.Y = (GlobalConst.BossVec.Y + (GlobalConst.BossTex.Height / 2));
+            bossBulletPos.X = ((GlobalConst.BossVec.X) +(GlobalConst.BossTex.Width) * 12);
+            bossBulletPos.Y = (GlobalConst.BossVec.Y + ((GlobalConst.BossTex.Height / 2)* 12));
 
             angle = Math.Atan((GlobalConst.PlayerPos.Y - bossBulletPos.Y) / (GlobalConst.PlayerPos.X - bossBulletPos.X));
 

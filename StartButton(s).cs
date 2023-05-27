@@ -14,6 +14,7 @@ public class StartButton
 	public Rectangle mouseRec, startBtn;
 	Enemy EnemyClass = new Enemy();
 	Player player = new Player();
+	Boss BossClass = new Boss();
     public Rectangle StartBtn()
 	{
 		return startBtn = new Rectangle((GlobalConst.WindowWidth / 2) - 75, (GlobalConst.WindowHeight / 2) - 35, 150, 70);
@@ -31,6 +32,7 @@ public class StartButton
 			if (GlobalConst.SeneStatus == 0)
 			{
                 GlobalConst.SeneStatus = 1;
+				GlobalConst.Health = 100;
                 GlobalConst.SpawnEnemyBool = true;
             }
 				
@@ -38,7 +40,7 @@ public class StartButton
 
 			else if (GlobalConst.SeneStatus == 1)	
 			{
-                GlobalConst.SeneStatus = 2;
+				GlobalConst.SeneStatus = 2;
                 GlobalConst.SpawnEnemyBool = true;
             }
             
@@ -46,7 +48,8 @@ public class StartButton
             else if (GlobalConst.SeneStatus == 2)
 			{
                 GlobalConst.SeneStatus = 3;
-				GlobalConst.BossHealth = 200;
+                BossClass.Initizlize();
+                GlobalConst.BossHealth = 200;
             }
 
 			else if (GlobalConst.SeneStatus == 3) 

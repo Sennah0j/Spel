@@ -172,11 +172,7 @@ namespace Pong
 
         }
         
-        public void BossMap(GameTime gameTime)
-        {
-            
-            BossClass.Initizlize();
-        }
+
 
         protected override void Update(GameTime gameTime) 
         {
@@ -205,7 +201,7 @@ namespace Pong
             healthClass.HealthBar();
 
             
-            BossMap(gameTime);
+           
 
             Cursor();
             
@@ -236,8 +232,8 @@ namespace Pong
                         {
                             HealthPack.Drop(GlobalConst.TripodPosList[count]);
                         }
-                        GlobalConst.TripodPosList.Remove(enemy);
-                        GlobalConst.TripodSpeedList.Remove(enemy);
+                        GlobalConst.TripodPosList.RemoveAt(count);
+                        GlobalConst.TripodSpeedList.RemoveAt(count);
                         GlobalConst.BulletsList.RemoveAt(i);
                         GlobalConst.BulletSpeedList.RemoveAt(i);
 

@@ -31,6 +31,8 @@ public class Pack
                 GlobalConst.PackPosList.Remove(pack);
 				if(!(GlobalConst.Health == 100))
                     GlobalConst.Health += 20;
+				else if(!(GlobalConst.Health  > 100))
+					GlobalConst.Health = 100;
             }
 		}
 	}
