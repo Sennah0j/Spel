@@ -59,7 +59,7 @@ public class Player
     {
         KeyboardState keyboardState = Keyboard.GetState();
         timeJump += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (keyboardState.IsKeyDown(Keys.W) && (touch == true))
+        if ((keyboardState.IsKeyDown(Keys.W)) && (touch == true))
         {
             mathPow = Math.Pow(mathPow, 0.99999999);
             playerPos.Y -= Convert.ToSingle(Math.Pow(mathPow, 0.999999999999));

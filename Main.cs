@@ -24,7 +24,7 @@ namespace Pong
                 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex, deathBtn, tripodTex;
+        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex, deathBtn, tripodTex, wasd;
 
 
         Texture2D coin;
@@ -130,10 +130,12 @@ namespace Pong
             player.playerShoot = Content.Load<Texture2D>("Sprites/SlimeShooting");
             GlobalConst.Enemy = Content.Load < Texture2D>("Sprites/tripod");
             GlobalConst.BulletTexture = Content.Load < Texture2D>("Sprites/bullet");
+            GlobalConst.GreenBullet = Content.Load<Texture2D>("Sprites/GreenBullet");
 
             GlobalConst.BossTex = Content.Load<Texture2D>("Sprites/Boss");
             GlobalConst.BossShootTex = Content.Load<Texture2D>("Sprites/BossShoot");
             GlobalConst.HealthPack = Content.Load<Texture2D>("Sprites/HealthPack");
+            wasd = Content.Load<Texture2D>("Sprites/WASD");
 
             platform = new Texture2D(GraphicsDevice, 1, 1);
             platform.SetData(new Color[] { Color.Black });
@@ -497,7 +499,7 @@ namespace Pong
 
                 foreach (Vector2 bullets in GlobalConst.BossBulletPos)
                 {
-                    spriteBatch.Draw(GlobalConst.BulletTexture, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
+                    spriteBatch.Draw(GlobalConst.GreenBullet, bullets, null, Color.White, 0, origin, 2, SpriteEffects.None, 0);
                 }
 
                 if (bulletClass.pressed == true)
@@ -555,6 +557,12 @@ namespace Pong
             {
                 
                 DeathScene();
+            }
+
+            if(GlobalConst.SeneStatus == 1)
+            {
+                spriteBatch.Draw(wasd, new Vector2(GlobalConst.WindowWidth / 2 , (GlobalConst.WindowHeight / 8)), null, Color.White, 0, origin, 3, SpriteEffects.None, 0);
+                
             }
 
             /*

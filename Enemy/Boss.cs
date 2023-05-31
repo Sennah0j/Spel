@@ -32,7 +32,7 @@ public class Boss
 	public void Shooting(GameTime gameTime)
 	{
         
-        if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 400))
+        if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 290))
         {
             bossBulletPos.X = ((GlobalConst.BossVec.X) + ((GlobalConst.BossTex.Width)/ 2) * 12);
             bossBulletPos.Y = (GlobalConst.BossVec.Y + ((GlobalConst.BossTex.Height / 2)* 12));
