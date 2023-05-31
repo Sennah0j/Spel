@@ -19,8 +19,8 @@ public class Boss
 	{
 		//bossVec.X = GlobalConst.WindowWidth / 2 - ((GlobalConst.BossTex.Width * 12) / 2);
 		//bossVec.Y = GlobalConst.WindowHeight - GlobalConst.BossTex.Height * 12;
-        bossVec.X = slump.Next(0,GlobalConst.WindowWidth - GlobalConst.BossTex.Width);
-        bossVec.Y = slump.Next(0, GlobalConst.WindowHeight - GlobalConst.BossTex.Height);
+        bossVec.X = slump.Next(0,GlobalConst.WindowWidth - GlobalConst.BossTex.Width * 12);
+        bossVec.Y = slump.Next(0, GlobalConst.WindowHeight - GlobalConst.BossTex.Height * 12);
 
         GlobalConst.BossVec = bossVec;
 	}
@@ -32,7 +32,7 @@ public class Boss
 	public void Shooting(GameTime gameTime)
 	{
         
-        if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 500))
+        if ((gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 400))
         {
             bossBulletPos.X = ((GlobalConst.BossVec.X) + ((GlobalConst.BossTex.Width)/ 2) * 12);
             bossBulletPos.Y = (GlobalConst.BossVec.Y + ((GlobalConst.BossTex.Height / 2)* 12));

@@ -10,7 +10,7 @@ using System.Threading;
 
 public class SceneChange
 {
-	public bool keyDown;
+	public bool keyDown = true;
 	public void ArrowSceneChange()
 	{
         KeyboardState keyboardState = Keyboard.GetState();

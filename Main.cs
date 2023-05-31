@@ -16,7 +16,7 @@ namespace Pong
 
         
         string blockRead, place;
-        bool F3TF = true, F3Click = false, F4TF = false, F4Click = false;
+        bool F3TF = false, F3Click = false, F4TF = false, F4Click = false;
         string sceneName;
         int sceneChanger = 0;
         static int points = 0, countNum = 0;
@@ -24,9 +24,9 @@ namespace Pong
                 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex, deathBtn;
-        
-        
+        Texture2D platform, touchPlat, startbtn, playerTexture, healthBarTex, deathBtn, tripodTex;
+
+
         Texture2D coin;
         
         Color backColor = Color.BurlyWood;
@@ -58,7 +58,7 @@ namespace Pong
         
         public Main()
         {
-
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -148,6 +148,8 @@ namespace Pong
             healthBarTex = new Texture2D(GraphicsDevice, 1, 1);
             healthBarTex.SetData(new Color[] { Color.Red });
 
+            tripodTex = new Texture2D(GraphicsDevice, 1, 1);
+            tripodTex.SetData(new Color[] { Color.Green });
 
             deathBtn = new Texture2D(GraphicsDevice, 1, 1);
             deathBtn.SetData(new Color[] { Color.White });
@@ -315,6 +317,10 @@ namespace Pong
 
 
             }
+            else
+            {
+                spriteBatch.DrawString(gameFont, "F3", new Vector2(10, 10), Color.White);
+            }
           
            
         }
@@ -342,6 +348,12 @@ namespace Pong
                 spriteBatch.Draw(platform, GlobalConst.RecPlayer, Color.Black);
                 spriteBatch.Draw(playerTexture, GlobalConst.PlayerRecPlat, Color.Red);
                 spriteBatch.Draw(platform, GlobalConst.BossRec, Color.Black);
+
+                foreach(Vector2 enemy in GlobalConst.TripodPosList)
+                {
+                    enemyRec = new Rectangle(enemy.ToPoint(), new Point(GlobalConst.Enemy.Width, GlobalConst.Enemy.Height));
+                    spriteBatch.Draw(tripodTex, enemyRec, Color.Green);
+                }
             }
         }
         public void DeathScene()
@@ -428,6 +440,7 @@ namespace Pong
 
         public void LevelClear()
         {
+            
             GraphicsDevice.Clear(Color.Black);
             //spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
             spriteBatch.DrawString(gameFont, "Good Job", new Vector2(GlobalConst.WindowWidth / 2 + 10, GlobalConst.WindowHeight / 3), Color.White);
@@ -442,7 +455,7 @@ namespace Pong
             //spriteBatch.Draw(platform, plattformsClass.CreateRec(20, 20, 20, 20), Color.White);
             spriteBatch.DrawString(gameFont, "You Won!", new Vector2(GlobalConst.WindowWidth / 2 + 10, GlobalConst.WindowHeight / 3), Color.White);
             spriteBatch.Draw(startbtn, DeathBtnClass.Btn(), GlobalConst.StartButtonColor);
-            spriteBatch.DrawString(gameFont, "Start Screen", new Vector2((StartButtonClass.StartBtn().X + StartButtonClass.StartBtn().Width / 2) - 10, (StartButtonClass.StartBtn().Y + StartButtonClass.StartBtn().Height / 2) - 10), Color.Black);
+            spriteBatch.DrawString(gameFont, "Start Screen", new Vector2((StartButtonClass.StartBtn().X + StartButtonClass.StartBtn().Width / 2) - 20, (StartButtonClass.StartBtn().Y + StartButtonClass.StartBtn().Height / 2) - 10), Color.Black);
             StartButtonClass.InteractBtn(mouse);
         }
 
